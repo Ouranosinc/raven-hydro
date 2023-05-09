@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.20...3.26)
+
+# Setup Raven Project
+PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
+
+# Fetch remote source files
+include(FetchContent)
+FetchContent_Populate(
+    RavenSource
+    URL ${RAVEN_URL}
+    URL_HASH SHA256=${RAVEN_SHA256}
+    SOURCE_DIR RavenSource
+)
+
+# Find NetCDF library
+list(APPEND CMAKE_MODULE_PATH ${HELPERS})
+find_package(NetCDF REQUIRED)
+
+# Add Python files
+find_package(pybind11 CONFIG REQUIRED)
+pybind11_add_module(_core MODULE src/main.cpp)
+target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+
+# Find header & source
+file(GLOB HEADER "${ravensource_SOURCE_DIR}/*.h")
+file(GLOB SOURCE "${ravensource_SOURCE_DIR}/*.cpp")
+
+# Add source files to build
+add_executable(${SKBUILD_PROJECT_NAME}
+  ${SOURCE}
+  ${HEADER}
+)
+source_group("Header Files" FILES ${HEADER})
+source_group("Source Files" FILES ${SOURCE})
+
+# Link relevant libraries to build
+target_link_libraries(${SKBUILD_PROJECT_NAME} PRIVATE NetCDF::NetCDF)
+target_compile_features(${SKBUILD_PROJECT_NAME} PUBLIC cxx_std_11)
+set_target_properties(${SKBUILD_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+
+# Install binary to environment $PATH
+install(TARGETS ${SKBUILD_PROJECT_NAME} DESTINATION ${SKBUILD_SCRIPTS_DIR})
+install(TARGETS _core DESTINATION raven)

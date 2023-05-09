@@ -1,0 +1,58 @@
+[build-system]
+requires = ["scikit_build_core", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "raven"
+authors = [
+  {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
+]
+description = "A Python wrapper to setup and build the hydrologic modelling framework Raven."
+requires-python = ">=3.8"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python",
+  "Topic :: Scientific/Engineering :: Hydrology"
+]
+keywords = ["raven", "hydrologic", "model"]
+#dynamic = ["version"]
+version = "3.7"
+
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://raven-hydro.readthedocs.io/"
+"Source" = "https://github.com/Ouranosinc/raven-hydro/"
+"Issue tracker" = "https://github.com/Ouranosinc/raven-hydro/issues"
+"About CSHS-CWRA" = "https://ouranos.ca"
+
+[tool]
+
+[tool.scikit-build]
+build-dir = "build"
+
+[tool.scikit-build.cmake]
+minimum-version = "3.20"
+build-type = "Release"
+args = [
+  "-DCMAKE_CXX_FLAGS='-Dnetcdf'"
+]
+verbose = true
+
+[tool.scikit-build.cmake.define]
+HELPERS = "helpers"
+RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.6/RavenSource_v3.6.zip"
+RAVEN_SHA256 = "a962f3377425868d9cc535b6858e0457f5307636f99466ee37ab66ecfbcaf35c"
+
+[tool.scikit-build.wheel]
+expand-macos-universal-tags = true
