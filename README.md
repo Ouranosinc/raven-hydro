@@ -1,6 +1,6 @@
 ## Raven-hydro
 
-[![License](https://img.shields.io/github/license/Ouranosinc/raven-hydro.svg)](https://github.com/Ouranosinc/raven-hydro/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/Ouranosinc/raven-hydro.svg)](https://github.com/Ouranosinc/raven-hydro/blob/main/LICENSE)
 
 <!-- cut after this -->
 
