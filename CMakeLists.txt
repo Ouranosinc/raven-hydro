@@ -47,4 +47,4 @@ add_custom_command(
         TARGET raven POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
                 ${ravensource_SOURCE_DIR}/LICENSE
-                ${SKBUILD_SCRIPTS_DIR}/raven_LICENSE)
+                ${SKBUILD_SCRIPTS_DIR}/raven_COPYING)

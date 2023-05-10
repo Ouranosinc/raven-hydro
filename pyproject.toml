@@ -68,7 +68,7 @@ RAVEN_SHA256 = "a962f3377425868d9cc535b6858e0457f5307636f99466ee37ab66ecfbcaf35c
 
 [tool.scikit-build.sdist]
 include = [
-  "CMakeLists.txt",
+  "./CMakeLists.txt",
   "build/RavenSource",
   "README.md",
   "helpers/FindNetCDF.cmake",
@@ -76,7 +76,7 @@ include = [
   "src/raven_hydro/__init__.py",
   "src/raven_hydro/_version.py"
 ]
-exclude = [".git", ".github", "build", "build/*/CMakeLists.txt", "dist", "Raven_errors.txt"]
+exclude = [".*", "build", "dist", "Raven_errors.txt"]
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
