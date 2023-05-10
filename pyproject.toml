@@ -1,9 +1,9 @@
 [build-system]
-requires = ["scikit_build_core", "pybind11"]
+requires = ["scikit_build_core", "pybind11", "hatchling", "hatch-fancy-pypi-readme"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "raven"
+name = "raven_hydro"
 authors = [
   {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
 ]
@@ -25,8 +25,8 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Hydrology"
 ]
 keywords = ["raven", "hydrologic", "model"]
-#dynamic = ["version"]
-version = "3.7"
+dynamic = ["readme"]
+version = "0.1.0"
 
 dependencies = []
 
@@ -40,6 +40,18 @@ dependencies = []
 
 [tool.scikit-build]
 build-dir = "build"
+experimental = true
+
+[tool.scikit-build.metadata]
+readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+start-after = "<!-- cut after this -->\n\n"
+end-before = "\n\n<!-- but before this -->"
 
 [tool.scikit-build.cmake]
 minimum-version = "3.20"
@@ -53,6 +65,18 @@ verbose = true
 HELPERS = "helpers"
 RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.6/RavenSource_v3.6.zip"
 RAVEN_SHA256 = "a962f3377425868d9cc535b6858e0457f5307636f99466ee37ab66ecfbcaf35c"
+
+[tool.scikit-build.sdist]
+include = [
+  "CMakeLists.txt",
+  "build/RavenSource",
+  "README.md",
+  "helpers/FindNetCDF.cmake",
+  "src/main.cpp",
+  "src/raven_hydro/__init__.py",
+  "src/raven_hydro/_version.py"
+]
+exclude = [".git", ".github", "build", "build/*/CMakeLists.txt", "dist", "Raven_errors.txt"]
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true

@@ -26,7 +26,7 @@ file(GLOB HEADER "${ravensource_SOURCE_DIR}/*.h")
 file(GLOB SOURCE "${ravensource_SOURCE_DIR}/*.cpp")
 
 # Add source files to build
-add_executable(${SKBUILD_PROJECT_NAME}
+add_executable(raven
   ${SOURCE}
   ${HEADER}
 )
@@ -34,10 +34,17 @@ source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SOURCE})
 
 # Link relevant libraries to build
-target_link_libraries(${SKBUILD_PROJECT_NAME} PRIVATE NetCDF::NetCDF)
-target_compile_features(${SKBUILD_PROJECT_NAME} PUBLIC cxx_std_11)
-set_target_properties(${SKBUILD_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+target_link_libraries(raven PRIVATE NetCDF::NetCDF)
+target_compile_features(raven PUBLIC cxx_std_11)
+set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Install binary to environment $PATH
-install(TARGETS ${SKBUILD_PROJECT_NAME} DESTINATION ${SKBUILD_SCRIPTS_DIR})
-install(TARGETS _core DESTINATION raven)
+install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
+install(TARGETS _core DESTINATION ${SKBUILD_PROJECT_NAME})
+
+# Add License for Raven after building library
+add_custom_command(
+        TARGET raven POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                ${ravensource_SOURCE_DIR}/LICENSE
+                ${SKBUILD_SCRIPTS_DIR}/raven_LICENSE)

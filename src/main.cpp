@@ -6,17 +6,7 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE(_core, m) {
-    m.doc() = R"pbdoc(
-        Pybind11 example plugin
-        -----------------------
-
-        .. currentmodule:: raven
-
-        .. autosummary::
-           :toctree: _generate
-
-           square
-    )pbdoc");
+    m.doc() = R"pbdoc(A Python wrapper to setup and build the hydrologic modelling framework Raven.)pbdoc";
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
