@@ -1,5 +1,10 @@
+name: raven-hydro Testing Suite
 
-
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   pip:
