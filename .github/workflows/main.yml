@@ -47,8 +47,6 @@ jobs:
           micromamba-version: 'latest'
           extra-specs: |
             python=${{ matrix.python-version }}
-            pip
-            libnetcdf
       - name: Install NetCDF4 (Ubuntu)
         if: |
           (matrix.os == 'ubuntu-latest') && (!matrix.conda)
