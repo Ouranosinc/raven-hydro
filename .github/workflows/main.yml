@@ -23,10 +23,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
+        if: ${{ matrix.os != windows-latest }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
+      - name: Install conda with NetCDF4 (Windows)
+        if: ${{ matrix.os == 'windows-latest'}}
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          cache-downloads: true
+          micromamba-version: 'latest'
+          extra-specs: |
+            python=${{ matrix.python-version }}
+            pip
+            libnetcdf
       - name: Install NetCDF4 (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -38,16 +48,6 @@ jobs:
         with:
           tools: netcdf
           cache: yes
-      - name: Install NetCDF4 (Windows)
-        if: matrix.os == 'windows-latest'
-        shell: bash -l {0}
-        run: |
-          git clone https://github.com/Unidata/netcdf-c.git
-          mkdir nc_build
-          cmake netcdf-c -DCMAKE_PREFIX_PATH=helpers/
-          cmake --build nc_build
-          cmake --build nc_build --target install
-
       - name: Install raven-hydro
         run: |
           python -m pip install --editable .
