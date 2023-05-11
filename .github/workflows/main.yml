@@ -1,0 +1,52 @@
+
+
+
+jobs:
+  pip:
+    name: Pip with Python${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: "3.9"
+            os: ubuntu-latest
+          - python-version: "3.10"
+            os: macos-latest
+          - python-version: "3.10"
+            os: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install NetCDF4 (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install libnetcdf-dev
+      - name: Install NetCDF4 (macOS)
+        if: matrix.os == 'macos-latest'
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: netcdf4
+          cache: yes
+      - name: Install NetCDF4 (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          git clone https://github.com/Unidata/netcdf-c.git
+          mkdir nc_build
+          cmake netcdf-c -DCMAKE_PREFIX_PATH=helpers/
+          cmake --build nc_build
+          cmake --build nc_build --target install
+
+      - name: Install raven-hydro
+        run: |
+          python -m pip install --editable .
+      - name: Test
+        run: |
+          python -c "import raven_hydro; print(raven_hydro.__version__)"
+          raven
