@@ -8,7 +8,7 @@ on:
 
 jobs:
   pip:
-    name: Pip with Python${{ matrix.python-version }} on ${{ matrix.os }}
+    name: Pip with Python${{ matrix.python-version }} on ${{ matrix.os }} (conda=${{ matrix.conda }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -16,19 +16,31 @@ jobs:
         include:
           - python-version: "3.9"
             os: ubuntu-latest
+            conda: false
+          - python-version: "3.9"
+            os: macos-latest
+            conda: true
+          - python-version: "3.9"
+            os: windows-latest
+            conda: true
+          - python-version: "3.10"
+            os: ubuntu-latest
+            conda: true
           - python-version: "3.10"
             os: macos-latest
+            conda: false
           - python-version: "3.10"
             os: windows-latest
+            conda: true
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        if: ${{ matrix.os != windows-latest }}
+        if: ${{ !matrix.conda }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install conda with NetCDF4 (Windows)
-        if: ${{ matrix.os == 'windows-latest'}}
+      - name: Install conda with NetCDF4
+        if: ${{ matrix.conda }}
         uses: mamba-org/provision-with-micromamba@main
         with:
           cache-downloads: true
@@ -38,12 +50,14 @@ jobs:
             pip
             libnetcdf
       - name: Install NetCDF4 (Ubuntu)
-        if: matrix.os == 'ubuntu-latest'
+        if: |
+          (matrix.os == 'ubuntu-latest') && (!matrix.conda)
         run: |
           sudo apt-get update
           sudo apt-get install libnetcdf-dev
       - name: Install NetCDF4 (macOS)
-        if: matrix.os == 'macos-latest'
+        if: |
+          (matrix.os == 'macos-latest') && (!matrix.conda)
         uses: tecolicom/actions-use-homebrew-tools@v1
         with:
           tools: netcdf
