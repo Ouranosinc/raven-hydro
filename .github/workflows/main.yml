@@ -36,7 +36,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: tecolicom/actions-use-homebrew-tools@v1
         with:
-          tools: netcdf4
+          tools: netcdf
           cache: yes
       - name: Install NetCDF4 (Windows)
         if: matrix.os == 'windows-latest'
