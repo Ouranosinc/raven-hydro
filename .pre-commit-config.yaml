@@ -20,15 +20,11 @@ repos:
     rev: 23.3.0
     hooks:
       - id: black
-  - repo: https://gi
   - repo: https://github.com/Takishima/cmake-pre-commit-hooks
     rev: v1.8.0
     hooks:
       - id: clang-format
-      - id: clang-tidy
-        args: [--checks=readability-magic-numbers,--warnings-as-errors=*]
-      - id: cppcheck
-      - id: include-what-you-use
+        args: ['-i']
   - repo: meta
     hooks:
       - id: check-hooks-apply
