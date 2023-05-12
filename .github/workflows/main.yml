@@ -65,8 +65,8 @@ jobs:
           cache: yes
       - name: Install raven-hydro
         run: |
-          python -m pip install --editable .
+          python${{ matrix.python-version }} -m pip install --editable .
       - name: Test
         run: |
-          python -c "import raven_hydro; print(raven_hydro.__version__)"
+          python${{ matrix.python-version }} -c "import raven_hydro; print(raven_hydro.__version__)"
           raven
