@@ -54,7 +54,7 @@ start-after = "<!-- cut after this -->\n\n"
 end-before = "\n\n<!-- but before this -->"
 
 [tool.scikit-build.cmake]
-minimum-version = "3.20"
+minimum-version = "3.24"
 build-type = "Release"
 args = [
   "-DCMAKE_CXX_FLAGS='-Dnetcdf'"

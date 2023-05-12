@@ -13,22 +13,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        os: ["ubuntu-latest", "macos-latest"]
+        conda: ["false"]
         include:
-          - python-version: "3.9"
+          - python-version: "3.8"
             os: ubuntu-latest
-            conda: false
+            conda: true
+          - python-version: "3.11"
+            os: ubuntu-latest
+            conda: true
           - python-version: "3.9"
+            os: macos-latest
+            conda: true
+          - python-version: "3.10"
             os: macos-latest
             conda: true
           - python-version: "3.9"
             os: windows-latest
             conda: true
-          - python-version: "3.10"
-            os: ubuntu-latest
-            conda: true
-          - python-version: "3.10"
-            os: macos-latest
-            conda: false
           - python-version: "3.10"
             os: windows-latest
             conda: true
@@ -55,15 +58,15 @@ jobs:
         if: |
           (matrix.os == 'ubuntu-latest') && (matrix.conda)
         run: |
-          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven_hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
+          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
       - name: Link NetCDF/HDF (macOS + conda)
         if: (matrix.os == 'macos-latest') && (matrix.conda)
         run: |
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven_hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven_hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven_hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven_hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.200.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven_hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.200.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.200.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.200.dylib
 
       - name: Install NetCDF4 (Ubuntu)
         if: |

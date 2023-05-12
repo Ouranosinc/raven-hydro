@@ -17,7 +17,7 @@ list(APPEND CMAKE_MODULE_PATH ${HELPERS})
 find_package(NetCDF REQUIRED)
 
 # Find ZLib library
-find_package(ZLIB)
+find_package(ZLIB REQUIRED)
 
 # Add Python files
 find_package(pybind11 CONFIG REQUIRED)
