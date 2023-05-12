@@ -60,13 +60,14 @@ jobs:
       - name: Link NetCDF/HDF (macOS/conda)
         if: (matrix.os == 'macos-latest') && (matrix.conda)
         run: |
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.310.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.310.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libcrypto.*dylib | head -n 1) /usr/local/lib/libcrypto.3.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libsz.*dylib | head -n 1) /usr/local/lib/libsz.2.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libcrypto.*dylib | head -n 1) /usr/local/lib/libcrypto.3.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.310.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.310.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libsz.*dylib | head -n 1) /usr/local/lib/libsz.2.dylib
+          echo "LD_LIBRARY_PATH=$HOME/micromamba-root/envs/raven-hydro/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Install NetCDF4 (Ubuntu/apt)
         if: |
