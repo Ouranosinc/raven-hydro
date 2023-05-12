@@ -53,7 +53,7 @@ jobs:
 
       - name: Set LD_PRELOAD for NetCDF source files (Linux + conda)
         if: |
-          (matrix.os == 'ubuntu-latest) && (matrix.conda)
+          (matrix.os == 'ubuntu-latest') && (matrix.conda)
         run: |
           echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven_hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
       - name: Link NetCDF/HDF (macOS + conda)
