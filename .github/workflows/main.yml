@@ -79,6 +79,9 @@ jobs:
         with:
           tools: netcdf
           cache: yes
+      - name: Check for OPeNDAP Support
+        run: |
+          nc-config --has-dap
 
       - name: Install raven-hydro
         run: |
