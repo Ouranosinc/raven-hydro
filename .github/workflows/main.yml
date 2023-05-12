@@ -53,13 +53,13 @@ jobs:
             python=${{ matrix.python-version }}
 
       - name: Set LD_PRELOAD for NetCDF source files (Ubuntu/conda)
-        if: |
-          (matrix.os == 'ubuntu-latest') && (matrix.conda)
+        if: (matrix.os == 'ubuntu-latest') && (matrix.conda)
         run: |
           echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
       - name: Link NetCDF/HDF (macOS/conda)
         if: (matrix.os == 'macos-latest') && (matrix.conda)
         run: |
+          echo "LD_LIBRARY_PATH=$HOME/micromamba-root/envs/raven-hydro/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 #          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libcrypto.*dylib | head -n 1) /usr/local/lib/libcrypto.3.dylib
 #          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
 #          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.310.dylib
@@ -67,17 +67,14 @@ jobs:
 #          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
 #          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
 #          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libsz.*dylib | head -n 1) /usr/local/lib/libsz.2.dylib
-          echo "LD_LIBRARY_PATH=$HOME/micromamba-root/envs/raven-hydro/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Install NetCDF4 (Ubuntu/apt)
-        if: |
-          (matrix.os == 'ubuntu-latest') && (!matrix.conda)
+        if: (matrix.os == 'ubuntu-latest') && (!matrix.conda)
         run: |
           sudo apt-get update
           sudo apt-get install libnetcdf-dev
       - name: Install NetCDF4 (macOS/homebrew)
-        if: |
-          (matrix.os == 'macos-latest') && (!matrix.conda)
+        if: (matrix.os == 'macos-latest') && (!matrix.conda)
         uses: tecolicom/actions-use-homebrew-tools@v1
         with:
           tools: netcdf
