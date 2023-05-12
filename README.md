@@ -16,7 +16,7 @@ Raven-hydro is a Python-based installer for the hydrologic modelling framework [
 
 The goal of this project is to provide a multiplatform installer for the Raven hydrological model using [scikit-build-core](https://github.com/scikit-build/scikit-build-core) and [pybind11](https://github.com/pybind/pybind11). The compiled binary is built with support for [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/), and uses a custom `CMakeLists.txt`, rather than the one provided with the [Raven source code](http://raven.uwaterloo.ca/Downloads.html), in order to leverage the `pip` to handle the installation of binaries and libraries.
 
-This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by solely providing a means for downloading, compiling, and installing the Raven binary on multiple platforms and as well as providing version control and updating via pip/PyPI.
+This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by solely providing a means for downloading, compiling, and installing the Raven binary (with NetCDF4 support) on multiple platforms and as well as providing version control and updating via pip/PyPI.
 
 ### Features
 
@@ -24,6 +24,13 @@ This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by sol
 - Multiplatform support (macOS, Linux, Windows, BSD, etc.)
 
 ### Installation
+
+> **Warning**
+> This build of Raven requires that NetCDF4 libraries are installed on the system and exposed on the `$PATH`.
+> 
+> On Linux, this can be provided by the `libnetcdf-dev` system library; On macOS by the `netcdf` homebrew package; And on Windows by using UNIDATA's [pre-built binaries](https://docs.unidata.ucar.edu/netcdf-c/current/winbin.html).
+> 
+> This can also be provided by the `libnetcdf` package available at [conda-forge](https://anaconda.org/conda-forge/libnetcdf), though is not guaranteed to work on macOS (further research required).
 
 `raven-hydro` can be installed from GitHub using the following command:
 
