@@ -15,25 +15,19 @@ jobs:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
         os: ["ubuntu-latest", "macos-latest"]
-        conda: ["false"]
+        conda: [false]
         include:
           - python-version: "3.8"
             os: ubuntu-latest
             conda: true
+          - python-version: "3.9"
+            os: macos-latest
+            conda: true
+          - python-version: "3.10"
+            os: windows-latest
+            conda: true
           - python-version: "3.11"
             os: ubuntu-latest
-            conda: true
-          - python-version: "3.9"
-            os: macos-latest
-            conda: true
-          - python-version: "3.10"
-            os: macos-latest
-            conda: true
-          - python-version: "3.9"
-            os: windows-latest
-            conda: true
-          - python-version: "3.10"
-            os: windows-latest
             conda: true
     defaults:
       run:
@@ -65,8 +59,8 @@ jobs:
           sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
           sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
           sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.200.dylib
-          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.200.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.310.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.310.dylib
 
       - name: Install NetCDF4 (Ubuntu)
         if: |
@@ -88,5 +82,5 @@ jobs:
           python3 -m pip install --editable .
       - name: Test
         run: |
-          python3 -c "import raven_hydro; print(raven_hydro.__version__)"
+          python3 -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
           raven
