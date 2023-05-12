@@ -50,12 +50,28 @@ jobs:
           micromamba-version: 'latest'
           extra-specs: |
             python=${{ matrix.python-version }}
+
+      - name: Set LD_PRELOAD for NetCDF source files (Linux + conda)
+        if: |
+          (matrix.os == 'ubuntu-latest) && (matrix.conda)
+        run: |
+          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven_hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
+      - name: Link NetCDF/HDF (macOS + conda)
+        if: (matrix.os == 'macos-latest') && (matrix.conda)
+        run: |
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/ravenpy -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/ravenpy -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/ravenpy -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/ravenpy -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.200.dylib
+          sudo ln -s $(find /Users/runner/micromamba-root/envs/ravenpy -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.200.dylib
+
       - name: Install NetCDF4 (Ubuntu)
         if: |
           (matrix.os == 'ubuntu-latest') && (!matrix.conda)
         run: |
           sudo apt-get update
           sudo apt-get install libnetcdf-dev
+          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven_hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
       - name: Install NetCDF4 (macOS)
         if: |
           (matrix.os == 'macos-latest') && (!matrix.conda)
@@ -63,6 +79,7 @@ jobs:
         with:
           tools: netcdf
           cache: yes
+
       - name: Install raven-hydro
         run: |
           python3 -m pip install --editable .
