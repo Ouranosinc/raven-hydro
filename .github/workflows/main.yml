@@ -3,7 +3,7 @@ name: raven-hydro Testing Suite
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
