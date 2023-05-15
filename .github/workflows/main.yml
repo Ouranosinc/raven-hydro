@@ -1,0 +1,92 @@
+name: raven-hydro Testing Suite
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: Python${{ matrix.python-version }} on ${{ matrix.os }} (conda=${{ matrix.conda }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        os: ["ubuntu-latest", "macos-latest"]
+        conda: [false]
+        include:
+          - python-version: "3.8"
+            os: ubuntu-latest
+            conda: true
+          - python-version: "3.9"
+            os: windows-latest
+            conda: true
+          - python-version: "3.10"
+            os: windows-latest
+            conda: true
+          - python-version: "3.11"
+            os: ubuntu-latest
+            conda: true
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+      - name: Set up Python${{ matrix.python-version }}
+        if: ${{ !matrix.conda }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up Python${{ matrix.python-version }} with NetCDF4 (conda)
+        if: ${{ matrix.conda }}
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          cache-downloads: true
+          micromamba-version: 'latest'
+          extra-specs: |
+            python=${{ matrix.python-version }}
+      - name: Set LD_PRELOAD for NetCDF source files (Ubuntu/conda)
+        if: (matrix.os == 'ubuntu-latest') && (matrix.conda)
+        run: |
+          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
+
+#        TODO: Research how to effectively link Darwin linked (dylib) libraries from a non-standard location (conda environment)
+#      - name: Link NetCDF/HDF (macOS/conda)
+#        if: (matrix.os == 'macos-latest') && (matrix.conda)
+#        run: |
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libcrypto.*dylib | head -n 1) /usr/local/lib/libcrypto.3.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libdf.*dylib | head -n 1) /usr/local/lib/libdf.0.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5.*dylib | head -n 1) /usr/local/lib/libhdf5.310.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libhdf5_hl.*dylib | head -n 1) /usr/local/lib/libhdf5_hl.310.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libmfhdf.*dylib | head -n 1) /usr/local/lib/libmfhdf.0.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*dylib | head -n 1) /usr/local/lib/libnetcdf.19.dylib
+#          sudo ln -s $(find /Users/runner/micromamba-root/envs/raven-hydro -name libsz.*dylib | head -n 1) /usr/local/lib/libsz.2.dylib
+
+      - name: Install NetCDF4 (Ubuntu/apt)
+        if: (matrix.os == 'ubuntu-latest') && (!matrix.conda)
+        run: |
+          sudo apt-get update
+          sudo apt-get install libnetcdf-dev
+      - name: Install NetCDF4 (macOS/homebrew)
+        if: (matrix.os == 'macos-latest') && (!matrix.conda)
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: netcdf
+          cache: yes
+      - name: Check for OPeNDAP Support
+        run: |
+          nc-config --has-dap
+
+      - name: Install raven-hydro
+        run: |
+          python3 -m pip install --editable .
+      - name: Test
+        run: |
+          python3 -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
+          raven

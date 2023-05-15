@@ -1,0 +1,7 @@
+name: raven-hydro
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - libnetcdf
+  - zlib

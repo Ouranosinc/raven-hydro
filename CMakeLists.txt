@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20...3.26)
+cmake_minimum_required(VERSION 3.24...3.26)
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
@@ -15,6 +15,9 @@ FetchContent_Populate(
 # Find NetCDF library
 list(APPEND CMAKE_MODULE_PATH ${HELPERS})
 find_package(NetCDF REQUIRED)
+
+# Find ZLib library
+find_package(ZLIB REQUIRED)
 
 # Add Python files
 find_package(pybind11 CONFIG REQUIRED)

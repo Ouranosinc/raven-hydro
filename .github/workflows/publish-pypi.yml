@@ -1,0 +1,36 @@
+name: Publish Python 🐍 distributions 📦 to PyPI
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build-n-publish-pypi:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+          - os: macos-latest
+          - os: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python3
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install packaging libraries
+        run: pip install build
+      - name: Build a source tarball
+        if: ${{ matrix.os == ubuntu-latest }}
+        run: python -m build --sdist
+      - name: Build a binary wheel
+        run: python -m build --wheel
+      - name: Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
