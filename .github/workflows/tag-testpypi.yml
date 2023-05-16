@@ -16,16 +16,39 @@ jobs:
           - os: ubuntu-latest
           - os: macos-latest
           - os: windows-latest
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python3
+        if: ${{ matrix.os != 'windows-latest' }}
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
+      - name: Set up Python${{ matrix.python-version }} with NetCDF4 (conda)
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          cache-downloads: true
+          micromamba-version: 'latest'
+          extra-specs: |
+            python=${{ matrix.python-version }}
+      - name: Install NetCDF4 (Ubuntu/apt)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install libnetcdf-dev
+      - name: Install NetCDF4 (macOS/homebrew)
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: netcdf
+          cache: yes
       - name: Install packaging libraries
         run: pip install build
       - name: Build a source tarball
-        if: ${{ matrix.os == ubuntu-latest }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: python -m build --sdist
       - name: Build a binary wheel
         run: python -m build --wheel
