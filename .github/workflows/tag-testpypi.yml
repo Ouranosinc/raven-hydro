@@ -5,9 +5,12 @@ on:
     tags:
       - '*'
 
+  # FIXME: This absolutely must be removed before merging!
+  pull_request:
+
 jobs:
-  build-n-publish-testpypi:
-    name: Build and publish Python 🐍 distributions 📦 to TestPyPI
+  build:
+    name: Build Source distribution and Wheels
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -52,10 +55,29 @@ jobs:
         run: python -m build --sdist
       - name: Build a binary wheel
         run: python -m build --wheel
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 28
+
+  publish-testpypi:
+    name: Publish Python 🐍 distributions 📦 to TestPyPI
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          path: dist
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          print-hash: true
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
