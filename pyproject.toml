@@ -8,6 +8,7 @@ authors = [
   {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
 ]
 description = "A Python wrapper to setup and build the hydrologic modelling framework Raven."
+license = {file = "LICENSE"}
 requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 4 - Beta",
