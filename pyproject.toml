@@ -53,7 +53,7 @@ experimental = true
 minimum-version = "3.24"
 build-type = "Release"
 args = [
-  "-DCMAKE_CXX_FLAGS='-Dnetcdf'"
+  "-DCMAKE_CXX_FLAGS='-Dnetcdf' -DBUILD_SHARED_LIBS=OFF"
 ]
 verbose = true
 
