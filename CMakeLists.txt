@@ -23,7 +23,7 @@ find_package(NetCDF REQUIRED)
 # cmake_print_variables(PROJECT_SOURCE_DIR)
 
 # Find ZLib library
-# find_package(ZLIB REQUIRED)
+find_package(ZLIB REQUIRED)
 
 # Add Python files
 set(PYBIND11_NEWPYTHON ON)
