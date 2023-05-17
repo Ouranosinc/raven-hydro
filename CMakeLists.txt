@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24...3.26)
 
 # Print message to stdout
-# include(CMakePrintHelpers)
+include(CMakePrintHelpers)
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
@@ -18,9 +18,7 @@ FetchContent_Populate(
 # Find NetCDF library
 list(APPEND CMAKE_MODULE_PATH ${HELPERS})
 find_package(NetCDF REQUIRED)
-# add_library(NetCDF SHARED NetCDF_LIBRARIES)
-# include_directories(NetCDF_INCLUDE_DIRS)
-# cmake_print_variables(PROJECT_SOURCE_DIR)
+cmake_print_variables(NetCDF_INCLUDE_DIRS)
 
 # Find ZLib library
 find_package(ZLIB REQUIRED)
