@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24...3.26)
 
 # Print message to stdout
-include(CMakePrintHelpers)
+# include(CMakePrintHelpers)
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
@@ -50,7 +50,7 @@ set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Install binary to environment $PATH
 install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
-install(TARGETS _core DESTINATION ${SKBUILD_PROJECT_NAME})
+install(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Add License for Raven after building library
 add_custom_command(
