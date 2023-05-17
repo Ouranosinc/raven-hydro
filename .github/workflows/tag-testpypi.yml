@@ -49,12 +49,12 @@ jobs:
           tools: netcdf
           cache: yes
       - name: Install packaging libraries
-        run: pip install build
+        run: python3 -m pip install build
       - name: Build a source tarball
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: python -m build --sdist
+        run: python3 -m build --sdist
       - name: Build a binary wheel
-        run: python -m build --wheel
+        run: python3 -m build --wheel
       - uses: actions/upload-artifact@v3
         with:
           name: dist
