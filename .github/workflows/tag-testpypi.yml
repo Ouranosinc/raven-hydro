@@ -60,7 +60,6 @@ jobs:
           name: dist
           path: dist
           if-no-files-found: error
-          retention-days: 28
 
   publish-testpypi:
     name: Publish Python 🐍 distributions 📦 to TestPyPI
