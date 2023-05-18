@@ -65,7 +65,8 @@ source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SOURCE})
 
 # Link relevant libraries to build
-target_link_libraries(raven PRIVATE NetCDF::NetCDF)
+include_directories(${NetCDF_INCLUDE_DIRS})
+target_link_libraries(raven PUBLIC NetCDF::NetCDF)
 target_compile_features(raven PUBLIC cxx_std_11)
 set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
