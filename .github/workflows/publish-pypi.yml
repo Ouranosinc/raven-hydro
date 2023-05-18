@@ -6,8 +6,8 @@ on:
       - published
 
 jobs:
-  build-n-publish-pypi:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI
+  build:
+    name: Build Source distribution and Wheels
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -46,10 +46,29 @@ jobs:
           tools: netcdf
           cache: yes
       - name: Install packaging libraries
-        run: pip install build
+        run: python3 -m pip install build
+      - name: Build a binary wheel
+        run: python3 -m build --wheel
       - name: Build a source tarball
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: python -m build --sdist
+        run: python3 -m build --sdist
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+          if-no-files-found: error
+
+  publish-testpypi:
+    name: Publish Python 🐍 distributions 📦 to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          path: dist
       - name: Build a binary wheel
         run: python -m build --wheel
       - name: Publish distribution 📦 to PyPI
