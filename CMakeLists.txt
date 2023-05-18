@@ -47,6 +47,7 @@ find_package(NetCDF REQUIRED)
 find_package(ZLIB REQUIRED)
 
 # Add Python files
+set(PYBIND11_NEWPYTHON ON)
 find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_core MODULE src/main.cpp)
 target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
@@ -72,7 +73,7 @@ set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Install binary to environment $PATH
 install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
-install(TARGETS _core DESTINATION ${SKBUILD_PROJECT_NAME})
+install(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Add License for Raven after building library
 add_custom_command(
