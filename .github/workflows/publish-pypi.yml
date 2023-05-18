@@ -58,7 +58,7 @@ jobs:
           path: dist
           if-no-files-found: error
 
-  publish-testpypi:
+  publish-pypi:
     name: Publish Python 🐍 distributions 📦 to PyPI
     needs: build
     runs-on: ubuntu-latest
