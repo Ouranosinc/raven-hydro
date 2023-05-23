@@ -54,8 +54,9 @@ jobs:
         run: python3 -m build --sdist
       - uses: actions/upload-artifact@v3
         with:
-          name: dist
-          path: dist
+          path: |
+            dist/*.tar.gz
+            dist/*.whl
           if-no-files-found: error
 
   publish-pypi:
@@ -67,10 +68,12 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/download-artifact@v3
+        id: download
         with:
+          name: artifact
           path: dist
-      - name: Build a binary wheel
-        run: python -m build --wheel
+      - name: Echo download path
+        run: echo ${{steps.download.outputs.download-path}}
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
