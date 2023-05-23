@@ -6,7 +6,9 @@ repos:
     rev: v4.4.0
     hooks:
       - id: trailing-whitespace
+        exclude: 'build/_deps/raven-src'
       - id: end-of-file-fixer
+        exclude: 'build/_deps/raven-src'
       - id: check-toml
   - repo: https://github.com/pappasam/toml-sort
     rev: v0.23.0
@@ -25,7 +27,20 @@ repos:
     hooks:
       - id: clang-format
         args: ['-i']
+        exclude: 'build/_deps/raven-src'
   - repo: meta
     hooks:
       - id: check-hooks-apply
       - id: check-useless-excludes
+
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: monthly
+  skip: [ ]
+  submodules: false

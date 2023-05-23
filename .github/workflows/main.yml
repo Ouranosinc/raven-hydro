@@ -18,10 +18,10 @@ jobs:
         conda: [false]
         include:
           - python-version: "3.8"
-            os: ubuntu-latest
+            os: windows-latest
             conda: true
           - python-version: "3.9"
-            os: windows-latest
+            os: ubuntu-latest
             conda: true
           - python-version: "3.10"
             os: windows-latest
@@ -40,6 +40,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Set up Python${{ matrix.python-version }}
         if: ${{ !matrix.conda }}
+        id: pyinstalled
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -84,9 +85,23 @@ jobs:
           nc-config --has-dap
 
       - name: Install raven-hydro
+        if: ${{ !matrix.conda }}
         run: |
-          python3 -m pip install --editable .
-      - name: Test
+          ${{ steps.pyinstalled.outputs.python-path }} -m pip install --editable .
+      - name: Test raven-hydro
+        if: ${{ !matrix.conda }}
         run: |
-          python3 -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
-          raven
+          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
+
+      - name: Install raven-hydro (conda)
+        if: ${{ matrix.conda }}
+        run: |
+          python -m pip install --editable .
+      - name: Test raven-hydro (conda)
+        if: ${{ matrix.conda }}
+        run: |
+          python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
+
+      - name: Test raven
+        run: |
+          raven -v

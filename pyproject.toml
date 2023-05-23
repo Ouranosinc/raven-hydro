@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit_build_core", "pybind11", "hatchling", "hatch-fancy-pypi-readme"]
+requires = ["scikit-build-core", "pybind11", "hatchling", "hatch-fancy-pypi-readme"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -7,14 +7,15 @@ name = "raven-hydro"
 authors = [
   {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
 ]
-description = "A Python wrapper to setup and build the hydrologic modelling framework Raven."
+description = "A Python wrapper to set-up and build the hydrologic modelling framework Raven."
+license = {file = "LICENSE"}
 requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Intended Audience :: Education",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: Apache Software License",
   "Natural Language :: English",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.8",
@@ -30,7 +31,7 @@ version = "0.2.0"
 dependencies = []
 
 [project.urls]
-"About Ouranos" = "https://www.ouranos.ca"
+"About Ouranos" = "https://www.ouranos.ca/en"
 "About Raven" = "http://raven.uwaterloo.ca/About.html"
 "Homepage" = "https://github.com/Ouranosinc/raven-hydro"
 "Issue tracker" = "https://github.com/Ouranosinc/raven-hydro/issues"
@@ -59,8 +60,11 @@ verbose = true
 
 [tool.scikit-build.cmake.define]
 HELPERS = "helpers"
+ALWAYS_DOWNLOAD = false
 RAVEN_VERSION = 3.7
 RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.7/RavenSource_v3.7.zip"
+# The following build is broken for macOS at time of writing:
+# RAVEN_SHA256 = "7aabf0295e0e28ffee424ff29cabc14301d95b27ad1fc3971bad634bc9fa08f4"
 RAVEN_SHA256 = "5fce9688f1c1004ee36d607b226dac856fb8d35d58a6caeb663bdbf177231f07"
 
 [tool.scikit-build.metadata]
@@ -70,8 +74,9 @@ readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
 include = [
   "./CMakeLists.txt",
   "CHANGES.md",
+  "LICENSE",
   "README.md",
-  "build/RavenSource",
+  "build/_deps/raven-src",
   "helpers/FindNetCDF.cmake",
   "src/main.cpp",
   "src/raven_hydro/__init__.py",
