@@ -57,7 +57,7 @@ jobs:
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --wheel
       - name: Build a source tarball (Ubuntu)
         if: |
-          (${{ matrix.os == 'ubuntu-latest' }}) && (${{ matrix.python-version == '3.8' }})
+          (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.8')
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
       - uses: actions/upload-artifact@v3
         with:
