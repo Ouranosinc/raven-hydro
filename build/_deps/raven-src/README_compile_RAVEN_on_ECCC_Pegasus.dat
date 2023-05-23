@@ -1,0 +1,33 @@
+How to get Raven compiled on Pegasus
+
+Juliane Mai
+Sep 25, 2018
+------------------------------------
+
+Adjustments need to be done in the Makefile of Raven such that
+it finds the NetCDF library on Pegasus. There are multiple installations.
+I have chosen the one under:
+/ssm/net/hpcs/201402/03-test/intel13sp1u2/ubuntu-14.04-amd64-64
+
+(1) Revise CXXFLAGS from
+
+    	   CXXFLAGS := -Wno-deprecated 
+
+    to
+
+           CXXFLAGS := -Wno-deprecated  -I/ssm/net/hpcs/201402/03-test/intel13sp1u2/ubuntu-14.04-amd64-64/include
+
+(2) Revise LDLIBS from
+
+    	   LDLIBS := -L/usr/local -lnetcdf
+
+    to
+
+	   LDLIBS := -L/ssm/net/hpcs/201402/03-test/intel13sp1u2/ubuntu-14.04-amd64-64/lib -lnetcdf
+
+
+That's it!
+
+
+
+
