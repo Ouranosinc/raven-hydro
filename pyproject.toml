@@ -60,7 +60,7 @@ verbose = true
 
 [tool.scikit-build.cmake.define]
 HELPERS = "helpers"
-ALWAYS_DOWNLOAD = true
+ALWAYS_DOWNLOAD = false
 RAVEN_VERSION = 3.7
 RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.7/RavenSource_v3.7.zip"
 RAVEN_SHA256 = "7aabf0295e0e28ffee424ff29cabc14301d95b27ad1fc3971bad634bc9fa08f4"
