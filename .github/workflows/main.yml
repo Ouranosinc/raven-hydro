@@ -89,4 +89,4 @@ jobs:
       - name: Test
         run: |
           python3 -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
-          raven
+          raven -v
