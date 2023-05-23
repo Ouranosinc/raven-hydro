@@ -31,7 +31,7 @@ version = "0.2.0"
 dependencies = []
 
 [project.urls]
-"About Ouranos" = "https://www.ouranos.ca"
+"About Ouranos" = "https://www.ouranos.ca/en"
 "About Raven" = "http://raven.uwaterloo.ca/About.html"
 "Homepage" = "https://github.com/Ouranosinc/raven-hydro"
 "Issue tracker" = "https://github.com/Ouranosinc/raven-hydro/issues"
