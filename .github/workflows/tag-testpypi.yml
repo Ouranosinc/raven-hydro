@@ -59,7 +59,8 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --wheel
       - name: Build a source tarball (Ubuntu)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: |
+          (${{ matrix.os == 'ubuntu-latest' }}) && (${{ matrix.python-version == '3.8' }})
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
       - uses: actions/upload-artifact@v3
         with:
@@ -81,8 +82,6 @@ jobs:
         with:
           name: artifact
           path: dist
-      - name: Echo download path
-        run: echo ${{steps.download.outputs.download-path}}
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
