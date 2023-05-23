@@ -20,7 +20,7 @@ This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by sol
 
 ### Features
 
-- Download and compile the Raven hydrological model with `pip`
+- Download and/or compile the Raven hydrological model with `pip`
 - Multiplatform support (macOS, Linux, Windows, BSD, etc.)
 
 ### Installation
@@ -32,10 +32,10 @@ This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by sol
 >
 > This can also be provided by the `libnetcdf` package available at [conda-forge](https://anaconda.org/conda-forge/libnetcdf), though this is not guaranteed to work on macOS at time of writing (further research required).
 
-`raven-hydro` can be installed from GitHub using the following command:
+`raven-hydro` can be installed from PyPI using the following command:
 
 ```shell
-$ pip install git+https://github.com/Ouranosinc/raven-hydro
+$ pip install raven-hydro
 ```
 
 For development purposes, we recommend cloning the repository and performing an `--editable` installation:
