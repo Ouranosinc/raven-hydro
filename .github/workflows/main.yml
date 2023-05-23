@@ -84,21 +84,21 @@ jobs:
         run: |
           nc-config --has-dap
 
-      - name: Install raven-hydro (Ubuntu/macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
+      - name: Install raven-hydro
+        if: ${{ !matrix.conda }}
         run: |
           ${{ steps.pyinstalled.outputs.python-path }} -m pip install --editable .
-      - name: Test raven-hydro (Ubuntu/macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
+      - name: Test raven-hydro
+        if: ${{ !matrix.conda }}
         run: |
           ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
 
-      - name: Install raven-hydro (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+      - name: Install raven-hydro (conda)
+        if: ${{ matrix.conda }}
         run: |
           python -m pip install --editable .
-      - name: Test raven-hydro (Ubuntu/macOS)
-        if: ${{ matrix.os == 'windows-latest' }}
+      - name: Test raven-hydro (conda)
+        if: ${{ matrix.conda }}
         run: |
           python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
 
