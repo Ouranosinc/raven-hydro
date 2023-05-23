@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Set up Python3
         if: ${{ matrix.os != 'windows-latest' }}
-        id: python-installed
+        id: pyinstalled
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -50,14 +50,17 @@ jobs:
           tools: netcdf
           cache: yes
       - name: Install packaging libraries (Ubuntu/macOS)
-        run: ${{ steps.python-installed.outputs.python-path }} -m pip install build virtualenv
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: ${{ steps.pyinstalled.outputs.python-path }} -m pip install build virtualenv
       - name: Build a binary wheel (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
         run: python -m build --wheel
       - name: Build a binary wheel (Ubuntu/macOS)
-        run: ${{ steps.python-installed.outputs.python-path }} -m build --wheel
-      - name: Build a source tarball
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: ${{ steps.pyinstalled.outputs.python-path }} -m build --wheel
+      - name: Build a source tarball (Ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: ${{ steps.python-installed.outputs.python-path }} -m build --sdist
+        run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
       - uses: actions/upload-artifact@v3
         with:
           path: |
