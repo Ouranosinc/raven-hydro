@@ -28,6 +28,10 @@ repos:
       - id: clang-format
         args: ['-i']
         exclude: 'build/_deps/raven-src'
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.22.0
+    hooks:
+      - id: check-github-workflows
   - repo: meta
     hooks:
       - id: check-hooks-apply
