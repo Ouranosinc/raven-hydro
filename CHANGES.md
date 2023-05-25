@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.1 (2023-05-25)
+
+* Raven-hydro only offers source distributions until issues arising from library linking/bundling have been resolved.
+
 ## 0.2.0 (2023-05-16)
 
 * Updated Raven version to v3.7
