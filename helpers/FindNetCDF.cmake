@@ -32,6 +32,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ~~~
 
+2023-05-30: Modified by Trevor James Smith (@Zeitsperre) to support Anaconda environments.
+
+~~~
+
 Provides the following variables:
 
   * `NetCDF_FOUND`: Whether NetCDF was found or not.
@@ -52,6 +56,47 @@ function(FindNetCDF_get_is_parallel_aware include_dir)
     set(NetCDF_HAS_PARALLEL FALSE PARENT_SCOPE)
   endif()
 endfunction()
+
+# Check if running within an Anaconda environment
+if(DEFINED ENV{CONDA_PREFIX})
+  set(Anaconda_ROOT "$ENV{CONDA_PREFIX}")
+  set(Anaconda_LIB_DIR "${Anaconda_ROOT}/lib")
+  set(Anaconda_INCLUDE_DIR "${Anaconda_ROOT}/include")
+  set(Anaconda_CMAKE_MODULE_DIR "${Anaconda_ROOT}/lib/cmake")
+endif()
+
+# Try to find a CMake-built NetCDF within Anaconda environment
+if(Anaconda_ROOT)
+  if(WIN32)
+    set(NetCDF_LIBRARY "${Anaconda_LIB_DIR}/netcdf.lib")
+  elseif(APPLE)
+    set(NetCDF_LIBRARY "${Anaconda_LIB_DIR}/libnetcdf.dylib")
+  else()
+    set(NetCDF_LIBRARY "${Anaconda_LIB_DIR}/libnetcdf.so")
+  endif()
+
+  if(EXISTS "${NetCDF_LIBRARY}")
+    set(NetCDF_FOUND TRUE)
+    set(NetCDF_INCLUDE_DIRS "${Anaconda_INCLUDE_DIR}")
+    set(NetCDF_VERSION "Unknown")  # Set the appropriate version if available
+
+    include(FindPackageHandleStandardArgs)
+    find_package_handle_standard_args(NetCDF
+      REQUIRED_VARS NetCDF_INCLUDE_DIRS NetCDF_LIBRARY
+      VERSION_VAR NetCDF_VERSION)
+
+    if (NOT TARGET NetCDF::NetCDF)
+      add_library(NetCDF::NetCDF UNKNOWN IMPORTED)
+      set_target_properties(NetCDF::NetCDF PROPERTIES
+        IMPORTED_LOCATION "${NetCDF_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${NetCDF_INCLUDE_DIRS}")
+    endif()
+
+    FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIRS}")
+    # Skip the rest of the logic in this file.
+    return()
+  endif()
+endif()
 
 # Try to find a CMake-built NetCDF.
 find_package(netCDF CONFIG QUIET)
