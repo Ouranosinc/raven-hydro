@@ -18,6 +18,12 @@ PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION}
 
 set(raven_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/raven-src)
 
+# Remove deprecation warnings for GCC
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
+    message(STATUS "Modified compile flags: "${CMAKE_CXX_FLAGS}")
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
 IF(NOT EXISTS ${raven_SOURCE_DIR} OR ${ALWAYS_DOWNLOAD})
     IF(NOT EXISTS ${raven_SOURCE_DIR})
         message(STATUS "Sources ${raven_SOURCE_DIR} not found: fetching Raven source files from remote")

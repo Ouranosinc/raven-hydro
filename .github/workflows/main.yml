@@ -52,10 +52,10 @@ jobs:
           micromamba-version: 'latest'
           extra-specs: |
             python=${{ matrix.python-version }}
-      - name: Set LD_PRELOAD for NetCDF source files (Ubuntu/conda)
-        if: (matrix.os == 'ubuntu-latest') && (matrix.conda)
-        run: |
-          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
+#      - name: Set LD_PRELOAD for NetCDF source files (Ubuntu/conda)
+#        if: (matrix.os == 'ubuntu-latest') && (matrix.conda)
+#        run: |
+#          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
 
 #        TODO: Research how to effectively link Darwin linked (dylib) libraries from a non-standard location (conda environment)
 #      - name: Link NetCDF/HDF (macOS/conda)
