@@ -36,8 +36,15 @@ IF(NOT EXISTS ${raven_SOURCE_DIR} OR ${ALWAYS_DOWNLOAD})
     # Fetch remote source files without building them
     FetchContent_Populate(raven)
 ELSE()
-    message(STATUS "Source found: ${raven_SOURCE_DIR}")
+    message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
+
+# Find Anaconda environment library path
+if(DEFINED ENV{CONDA_PREFIX})
+    set(CONDA_LIBRARY_PATH $ENV{CONDA_PREFIX}/lib)
+else()
+    set(CONDA_LIBRARY_PATH "")
+endif()
 
 # Find NetCDF library
 list(APPEND CMAKE_MODULE_PATH ${HELPERS})
@@ -65,15 +72,27 @@ add_executable(raven
 source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SOURCE})
 
+# Link Anaconda environment libraries if available, otherwise use system libraries
+if(NOT "${CONDA_LIBRARY_PATH}" STREQUAL "")
+    include_directories(${CONDA_LIBRARY_PATH})
+else()
+    include_directories(${NetCDF_INCLUDE_DIRS})
+endif()
+
 # Link relevant libraries to build
-include_directories(${NetCDF_INCLUDE_DIRS})
 target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
 target_compile_features(raven PUBLIC cxx_std_11)
 set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
-# Install binary to environment $PATH
-install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
+# Install library to environment Python /lib
 install(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+
+# Install binary to environment /bin
+add_custom_command(
+        TARGET raven POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_CURRENT_BINARY_DIR}/raven
+                ${SKBUILD_SCRIPTS_DIR}/raven)
 
 # Add License for Raven after building library
 add_custom_command(
