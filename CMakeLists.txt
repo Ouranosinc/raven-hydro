@@ -94,11 +94,15 @@ set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 install(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
-add_custom_command(
-        TARGET raven POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-                ${CMAKE_CURRENT_BINARY_DIR}/raven
-                ${SKBUILD_SCRIPTS_DIR}/raven)
+if(WIN32)
+  install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
+else()
+  add_custom_command(
+          TARGET raven POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E copy
+                  ${CMAKE_CURRENT_BINARY_DIR}/raven
+                  ${SKBUILD_SCRIPTS_DIR}/raven)
+endif()
 
 # Add License for Raven after building library
 add_custom_command(
