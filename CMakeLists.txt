@@ -46,11 +46,11 @@ ELSE()
 ENDIF()
 
 # Find Anaconda environment library path
-if(DEFINED ENV{CONDA_PREFIX})
-    set(CONDA_LIBRARY_PATH $ENV{CONDA_PREFIX}/lib)
-else()
-    set(CONDA_LIBRARY_PATH "")
-endif()
+# if(DEFINED ENV{CONDA_PREFIX})
+#     set(CONDA_LIBRARY_PATH $ENV{CONDA_PREFIX}/lib)
+# else()
+#     set(CONDA_LIBRARY_PATH "")
+# endif()
 
 # Find NetCDF library
 list(APPEND CMAKE_MODULE_PATH ${HELPERS})
@@ -79,13 +79,14 @@ source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SOURCE})
 
 # Link Anaconda environment libraries if available, otherwise use system libraries
-if(NOT "${CONDA_LIBRARY_PATH}" STREQUAL "")
-    include_directories(${CONDA_LIBRARY_PATH})
-else()
-    include_directories(${NetCDF_INCLUDE_DIRS})
-endif()
+# if(NOT "${CONDA_LIBRARY_PATH}" STREQUAL "")
+#     include_directories(${CONDA_LIBRARY_PATH})
+# else()
+#     include_directories(${NetCDF_INCLUDE_DIRS})
+# endif()
 
 # Link relevant libraries to build
+include_directories(${NetCDF_INCLUDE_DIRS})
 target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
 target_compile_features(raven PUBLIC cxx_std_11)
 set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
