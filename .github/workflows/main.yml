@@ -7,8 +7,31 @@ on:
   pull_request:
 
 jobs:
+  black:
+    name: Code linting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+      - name: Run linting suite
+        run: |
+          pre-commit run --all-files
+
   build:
     name: Python${{ matrix.python-version }} on ${{ matrix.os }} (conda=${{ matrix.conda }})
+    needs: black
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -40,6 +63,7 @@ jobs:
         uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
+
       - uses: actions/checkout@v3
       - name: Set up Python${{ matrix.python-version }}
         if: ${{ !matrix.conda }}
