@@ -52,6 +52,8 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           cache-downloads: true
+          cache-environment: true
+          environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
 
