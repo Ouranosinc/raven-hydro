@@ -27,7 +27,7 @@ classifiers = [
 ]
 keywords = ["raven", "hydrologic", "model", "cmake"]
 dynamic = ["readme"]
-version = "0.2.1"
+version = "0.2.2"
 dependencies = []
 
 [project.urls]
