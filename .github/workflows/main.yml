@@ -7,8 +7,31 @@ on:
   pull_request:
 
 jobs:
+  black:
+    name: Code linting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+      - name: Run linting suite
+        run: |
+          pre-commit run --all-files
+
   build:
     name: Python${{ matrix.python-version }} on ${{ matrix.os }} (conda=${{ matrix.conda }})
+    needs: black
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -24,19 +47,18 @@ jobs:
             os: ubuntu-latest
             conda: true
           - python-version: "3.10"
+            os: ubuntu-latest
+            conda: true
+          - python-version: "3.10"
             os: windows-latest
             conda: true
-          - python-version: "3.11"
-            os: ubuntu-latest
+          - python-version: "3.10"
+            os: macos-latest
             conda: true
     defaults:
       run:
         shell: bash -l {0}
     steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
       - uses: actions/checkout@v3
       - name: Set up Python${{ matrix.python-version }}
         if: ${{ !matrix.conda }}
@@ -46,18 +68,19 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Set up Python${{ matrix.python-version }} with NetCDF4 (conda)
         if: ${{ matrix.conda }}
-        uses: mamba-org/provision-with-micromamba@main
+        uses: mamba-org/setup-micromamba@v1
         with:
           cache-downloads: true
-          micromamba-version: 'latest'
-          extra-specs: |
+          cache-environment: true
+          environment-file: environment.yml
+          create-args: >-
             python=${{ matrix.python-version }}
-      - name: Set LD_PRELOAD for NetCDF source files (Ubuntu/conda)
-        if: (matrix.os == 'ubuntu-latest') && (matrix.conda)
-        run: |
-          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
 
-#        TODO: Research how to effectively link Darwin linked (dylib) libraries from a non-standard location (conda environment)
+#      - name: Set LD_PRELOAD for NetCDF source files (Ubuntu/conda)
+#        if: (matrix.os == 'ubuntu-latest') && (matrix.conda)
+#        run: |
+#          echo "LD_PRELOAD=$(find /home/runner/micromamba-root/envs/raven-hydro -name libnetcdf.*so | head -n 1)" >> $GITHUB_ENV
+
 #      - name: Link NetCDF/HDF (macOS/conda)
 #        if: (matrix.os == 'macos-latest') && (matrix.conda)
 #        run: |
