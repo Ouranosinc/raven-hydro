@@ -11,11 +11,11 @@ repos:
         exclude: 'build/_deps/raven-src'
       - id: check-toml
   - repo: https://github.com/pappasam/toml-sort
-    rev: v0.23.0
+    rev: v0.23.1
     hooks:
       - id: toml-sort-fix
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.31.0
+    rev: v1.32.0
     hooks:
       - id: yamllint
   - repo: https://github.com/psf/black
@@ -23,13 +23,13 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/Takishima/cmake-pre-commit-hooks
-    rev: v1.8.0
+    rev: v1.9.0
     hooks:
       - id: clang-format
         args: ['-i']
         exclude: 'build/_deps/raven-src'
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.22.0
+    rev: 0.23.1
     hooks:
       - id: check-github-workflows
   - repo: meta
