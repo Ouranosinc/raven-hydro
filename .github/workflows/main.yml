@@ -30,7 +30,7 @@ jobs:
           pre-commit run --all-files
 
   build:
-    name: Python${{ matrix.python-version }} on ${{ matrix.os }} (conda=${{ matrix.conda }})
+    name: Python${{ matrix.python-version }} on ${{ matrix.os }} (conda=${{ matrix.conda }}) (install_args=${{ matrix.install_args }})
     needs: black
     runs-on: ${{ matrix.os }}
     strategy:
@@ -93,6 +93,7 @@ jobs:
           tools: netcdf
           cache: yes
       - name: Check for OPeNDAP Support
+        if: (!matrix.install_args)
         run: |
           nc-config --has-dap
 
