@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.3 (2023-07-04)
+
+* Raven-hydro now supports building raven model without NetCDF4 support (see README.md for details).
+
 ## 0.2.2 (2023-06-05)
 
 * Building Raven-hydro from sources available on pip within an Anaconda environment is now supported.
