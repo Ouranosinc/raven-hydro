@@ -16,13 +16,13 @@ cmake_minimum_required(VERSION 3.24...3.26)
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
-set(raven_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/raven-src)
+SET(raven_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/raven-src)
 
 # Remove deprecation warnings for GCC
-if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
-    message(STATUS "Modified compile flags: ${CMAKE_CXX_FLAGS}")
-endif(CMAKE_COMPILER_IS_GNUCXX)
+IF(CMAKE_COMPILER_IS_GNUCXX)
+    add_compile_options(-Wno-deprecated)
+    message(STATUS "Modified compile flags with '-Wno-deprecated'")
+ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
 IF(NOT EXISTS ${raven_SOURCE_DIR} OR ${ALWAYS_DOWNLOAD})
     IF(NOT EXISTS ${raven_SOURCE_DIR})
@@ -45,30 +45,29 @@ ELSE()
     message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
 
-# Find Anaconda environment library path
-# if(DEFINED ENV{CONDA_PREFIX})
-#     set(CONDA_LIBRARY_PATH $ENV{CONDA_PREFIX}/lib)
-# else()
-#     set(CONDA_LIBRARY_PATH "")
-# endif()
+IF(USE_NETCDF)
+    # Add NetCDF support flag
+    add_compile_options(-Dnetcdf)
+    message(STATUS "Modified compile flags with '-Dnetcdf'")
 
-# Find NetCDF library
-list(APPEND CMAKE_MODULE_PATH ${HELPERS})
-find_package(NetCDF REQUIRED)
+    # Find NetCDF library
+    list(APPEND CMAKE_MODULE_PATH ${HELPERS})
+    find_package(NetCDF REQUIRED)
 
-# Find ZLib library
-find_package(ZLIB REQUIRED)
+    # Find ZLib library
+    find_package(ZLIB REQUIRED)
+ENDIF()
 
 # Add Python files
-set(PYBIND11_NEWPYTHON ON)
+SET(PYBIND11_NEWPYTHON ON)
 find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_core MODULE src/main.cpp)
 target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
 target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
 
 # Find header & source
-file(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
-file(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
+FILE(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
+FILE(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
 
 # Add source files to build
 add_executable(raven
@@ -85,25 +84,28 @@ source_group("Source Files" FILES ${SOURCE})
 #     include_directories(${NetCDF_INCLUDE_DIRS})
 # endif()
 
-# Link relevant libraries to build
-include_directories(${NetCDF_INCLUDE_DIRS})
-target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+IF(USE_NETCDF)
+    # Link relevant NetCDF libraries to build
+    include_directories(${NetCDF_INCLUDE_DIRS})
+    target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+ENDIF()
+
 target_compile_features(raven PUBLIC cxx_std_11)
 set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Install library to environment Python /lib
-install(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
-if(WIN32)
+IF(WIN32)
   install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
-else()
+ELSE()
   add_custom_command(
           TARGET raven POST_BUILD
           COMMAND ${CMAKE_COMMAND} -E copy
                   ${CMAKE_CURRENT_BINARY_DIR}/raven
                   ${SKBUILD_SCRIPTS_DIR}/raven)
-endif()
+ENDIF()
 
 # Add License for Raven after building library
 add_custom_command(

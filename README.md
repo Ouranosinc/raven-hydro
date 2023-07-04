@@ -26,7 +26,7 @@ This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by sol
 ### Installation
 
 > **Warning**
-> This build of Raven requires that NetCDF4 libraries are installed on the system, exposed on the `$PATH`, and discoverable using the `FindNetCDF.cmake` helper script.
+> By default, this build of Raven requires that NetCDF4 libraries are installed on the system, exposed on the `$PATH`, and discoverable using the `FindNetCDF.cmake` helper script.
 >
 > On Linux, this can be provided by the `libnetcdf-dev` system library; On macOS by the `netcdf` homebrew package; And on Windows by using UNIDATA's [pre-built binaries](https://docs.unidata.ucar.edu/netcdf-c/current/winbin.html).
 >
@@ -36,6 +36,12 @@ This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by sol
 
 ```shell
 $ pip install raven-hydro
+```
+
+To install `raven-hydro` from PyPI **without NetCDF support**:
+
+```shell
+$ pip install raven-hydro -Ccmake.define.USE_NETCDF=false
 ```
 
 For development purposes, we recommend cloning the repository and performing an `--editable` installation:
