@@ -30,7 +30,7 @@ jobs:
           pre-commit run --all-files
 
   build:
-    name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}), args=${{ matrix.install_args }})
+    name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}, args=${{ matrix.install_args }})
     needs: black
     runs-on: ${{ matrix.os }}
     strategy:
