@@ -36,8 +36,8 @@ IF(NOT EXISTS ${raven_SOURCE_DIR} OR ${ALWAYS_DOWNLOAD})
     # Define source library location
     FetchContent_Declare(
         raven
-        URL ${RAVEN_URL}
-        URL_HASH SHA256=${RAVEN_SHA256}
+        GIT_REPOSITORY ${RAVEN_GIT_REPO}
+        GIT_TAG ${RAVEN_GIT_TAG}
         )
     # Fetch remote source files without building them
     FetchContent_Populate(raven)
@@ -45,6 +45,15 @@ ELSE()
     message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
 
+# Add Python files
+SET(PYBIND11_NEWPYTHON ON)
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG REQUIRED)
+pybind11_add_module(_core MODULE src/main.cpp)
+target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
+target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+
+# Add NetCDF support
 IF(USE_NETCDF)
     # Add NetCDF support flag
     add_compile_options(-Dnetcdf)
@@ -58,16 +67,9 @@ IF(USE_NETCDF)
     find_package(ZLIB REQUIRED)
 ENDIF()
 
-# Add Python files
-SET(PYBIND11_NEWPYTHON ON)
-find_package(pybind11 CONFIG REQUIRED)
-pybind11_add_module(_core MODULE src/main.cpp)
-target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
-target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
-
 # Find header & source
-FILE(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
-FILE(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
+FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
+FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
 
 # Add source files to build
 add_executable(raven

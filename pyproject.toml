@@ -59,9 +59,9 @@ verbose = true
 USE_NETCDF = true
 HELPERS = "helpers"
 ALWAYS_DOWNLOAD = false
-RAVEN_VERSION = 3.7
-RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.7/RavenSource_v3.7.zip"
-RAVEN_SHA256 = "1460658be8d47d9d1f3a25ffde881c0c2be72b5ad3b048811142d45b01c62bdb"
+RAVEN_VERSION = "3.7.1"
+RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
+RAVEN_GIT_TAG = "d90233bf2a3ef3839f339900489fa06e355813ec"
 
 [tool.scikit-build.metadata]
 readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
@@ -73,7 +73,7 @@ include = [
   "CHANGES.md",
   "LICENSE",
   "README.md",
-  "build/_deps/raven-src",
+  "build/_deps/raven-git/src",
   "helpers/FindNetCDF.cmake",
   "src/main.cpp",
   "src/raven_hydro/__init__.py",
@@ -82,4 +82,5 @@ include = [
 exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 
 [tool.scikit-build.wheel]
+install-dir = "raven-hydro"
 expand-macos-universal-tags = true
