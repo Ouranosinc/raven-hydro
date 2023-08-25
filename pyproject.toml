@@ -59,7 +59,7 @@ verbose = true
 USE_NETCDF = true
 HELPERS = "helpers"
 ALWAYS_DOWNLOAD = false
-RAVEN_VERSION = 3.7
+RAVEN_VERSION = "3.7"
 RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.7/RavenSource_v3.7.zip"
 RAVEN_SHA256 = "1460658be8d47d9d1f3a25ffde881c0c2be72b5ad3b048811142d45b01c62bdb"
 
