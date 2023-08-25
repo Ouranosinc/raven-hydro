@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.4 (2023-08-25)
+
+* Raven-hydro now supports `cmake` v2.37 and follows better Python discovery conventions.
+
 ## 0.2.3 (2023-07-04)
 
 * Raven-hydro now supports building raven model without NetCDF4 support (see README.md for details).
