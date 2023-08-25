@@ -60,6 +60,7 @@ ENDIF()
 
 # Add Python files
 SET(PYBIND11_NEWPYTHON ON)
+find_package(Python COMPONENTS REQUIRED Interpreter Development)
 find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_core MODULE src/main.cpp)
 target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
