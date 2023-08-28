@@ -11,7 +11,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-cmake_minimum_required(VERSION 3.24...3.26)
+cmake_minimum_required(VERSION 3.24...3.27)
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
@@ -60,6 +60,7 @@ ENDIF()
 
 # Add Python files
 SET(PYBIND11_NEWPYTHON ON)
+find_package(Python COMPONENTS REQUIRED Interpreter Development)
 find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_core MODULE src/main.cpp)
 target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
