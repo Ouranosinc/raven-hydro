@@ -29,7 +29,7 @@ repos:
         args: ['-i']
         exclude: 'build/_deps/raven-src'
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.23.3
+    rev: 0.26.3
     hooks:
       - id: check-github-workflows
   - repo: meta
