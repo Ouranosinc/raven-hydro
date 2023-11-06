@@ -3,7 +3,7 @@ default_language_version:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
         exclude: 'build/_deps/raven-src'
@@ -19,17 +19,17 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.10.1
     hooks:
       - id: black
   - repo: https://github.com/Takishima/cmake-pre-commit-hooks
-    rev: v1.9.2
+    rev: v1.9.4
     hooks:
       - id: clang-format
         args: ['-i']
         exclude: 'build/_deps/raven-src'
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.27.0
+    rev: 0.27.1
     hooks:
       - id: check-github-workflows
   - repo: meta
