@@ -18,7 +18,7 @@ repos:
     rev: v1.33.0
     hooks:
       - id: yamllint
-  - repo: https://github.com/psf/black
+  - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 23.11.0
     hooks:
       - id: black
@@ -26,7 +26,7 @@ repos:
     rev: v1.9.4
     hooks:
       - id: clang-format
-        args: ['-i']
+        args: [ '-i' ]
         exclude: 'build/_deps/raven-src'
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.27.2
