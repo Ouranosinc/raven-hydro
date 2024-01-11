@@ -1,0 +1,3 @@
+[submodule "RavenHydroFramework"]
+	path = RavenHydroFramework
+	url = https://github.com/CSHS-CWRA/RavenHydroFramework
