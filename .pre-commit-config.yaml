@@ -6,9 +6,9 @@ repos:
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
-        exclude: 'build/_deps/raven-src'
+        exclude: 'src/RavenHydroFramework'
       - id: end-of-file-fixer
-        exclude: 'build/_deps/raven-src'
+        exclude: 'src/RavenHydroFramework'
       - id: check-toml
   - repo: https://github.com/pappasam/toml-sort
     rev: v0.23.1
@@ -27,9 +27,9 @@ repos:
     hooks:
       - id: clang-format
         args: [ '-i' ]
-        exclude: 'build/_deps/raven-src'
+        exclude: 'src/RavenHydroFramework'
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.16.1
+    rev: v8.18.1
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
@@ -49,6 +49,6 @@ ci:
   autofix_prs: true
   autoupdate_branch: ''
   autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
-  autoupdate_schedule: monthly
+  autoupdate_schedule: quarterly
   skip: [ ]
   submodules: false
