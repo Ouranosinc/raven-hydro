@@ -16,7 +16,8 @@ cmake_minimum_required(VERSION 3.24...3.27)
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
-SET(raven_SOURCE_DIR src/RavenHydroFramework)
+# Set the RavenHydroFramework source directory
+SET(raven_SOURCE_DIR RavenHydroFramework)
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
@@ -45,13 +46,24 @@ ELSE()
     message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
 
+# Find header & source
+FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
+FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
+
+# Add source files to build
+source_group("Header Files" FILES ${HEADER})
+source_group("Source Files" FILES ${SOURCE})
+
 # Add Python files
+include_directories(${raven_SOURCE_DIR}/src)
 SET(PYBIND11_NEWPYTHON ON)
-find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
-pybind11_add_module(_core MODULE src/main.cpp)
-target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
-target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+pybind11_add_module(libraven MODULE src/main.cpp)
+target_compile_definitions(libraven PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
+target_compile_definitions(libraven PRIVATE VERSION_INFO=${PROJECT_VERSION})
+target_compile_features(libraven PUBLIC cxx_std_11)
+set_target_properties(libraven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Add NetCDF support
 IF(USE_NETCDF)
@@ -67,17 +79,13 @@ IF(USE_NETCDF)
     find_package(ZLIB REQUIRED)
 ENDIF()
 
-# Find header & source
-FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
-FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
-
-# Add source files to build
+# Create executable - file extension is OS dependent (Linux: none, Windows: .exe)
 add_executable(raven
-  ${SOURCE}
-  ${HEADER}
+    ${SOURCE}
+    ${HEADER}
 )
-source_group("Header Files" FILES ${HEADER})
-source_group("Source Files" FILES ${SOURCE})
+target_compile_definitions(raven PUBLIC STANDALONE)
+set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Link Anaconda environment libraries if available, otherwise use system libraries
 # if(NOT "${CONDA_LIBRARY_PATH}" STREQUAL "")
@@ -90,28 +98,17 @@ IF(USE_NETCDF)
     # Link relevant NetCDF libraries to build
     include_directories(${NetCDF_INCLUDE_DIRS})
     target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+    target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARIES})
 ENDIF()
 
-target_compile_features(raven PUBLIC cxx_std_11)
-set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
-
 # Install library to environment Python /lib
-INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+INSTALL(TARGETS libraven LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
 IF(WIN32)
-  install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
+    INSTALL(TARGETS Raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
 ELSE()
-  add_custom_command(
-          TARGET raven POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy
-                  ${CMAKE_CURRENT_BINARY_DIR}/raven
-                  ${SKBUILD_SCRIPTS_DIR}/raven)
-ENDIF()
-
-# Add License for Raven after building library
-add_custom_command(
+    add_custom_command(
         TARGET raven POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-                ${raven_SOURCE_DIR}/LICENSE
-                ${SKBUILD_SCRIPTS_DIR}/raven_COPYING)
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/raven ${SKBUILD_SCRIPTS_DIR}/raven)
+ENDIF()

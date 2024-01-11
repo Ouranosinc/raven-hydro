@@ -14,6 +14,6 @@
    limitations under the License.
 """
 
-from ._core import __doc__, __raven_version__, __version__
+from .libraven import __doc__, __netcdf__, __raven_version__, __version__
 
-__all__ = ["__doc__", "__raven_version__", "__version__"]
+__all__ = ["__doc__", "__netcdf__", "__raven_version__", "__version__"]

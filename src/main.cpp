@@ -1,16 +1,24 @@
 #include <pybind11/pybind11.h>
+#include "RavenInclude.h"
+
+#ifdef _RVNETCDF_
+const bool    __HAS_NETCDF__ = true;
+#endif
+#ifndef _RVNETCDF_
+const bool    __HAS_NETCDF__ = false;
+#endif
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(_core, m) {
+PYBIND11_MODULE(libraven, m) {
   m.doc() =
       R"pbdoc(A Python wrapper to setup and build the hydrologic modelling framework Raven.)pbdoc";
 
-  m.attr("__raven_version__") = MACRO_STRINGIFY(RAVEN_VERSION_INFO);
-  m.attr("__netcdf__") = MACRO_STRINGIFY(USE_NETCDF);
+  m.attr("__raven_version__") = __RAVEN_VERSION__;
+  m.attr("__netcdf__") = __HAS_NETCDF__;
 
 #ifdef VERSION_INFO
   m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
