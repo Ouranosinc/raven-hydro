@@ -1,11 +1,11 @@
-#include <pybind11/pybind11.h>
 #include "RavenInclude.h"
+#include <pybind11/pybind11.h>
 
 #ifdef _RVNETCDF_
-const bool    __HAS_NETCDF__ = true;
+const bool __HAS_NETCDF__ = true;
 #endif
 #ifndef _RVNETCDF_
-const bool    __HAS_NETCDF__ = false;
+const bool __HAS_NETCDF__ = false;
 #endif
 
 #define STRINGIFY(x) #x

@@ -76,7 +76,7 @@ include = [
   "src/RavenHydroFramework",
   "src/main.cpp",
   "src/raven_hydro/__init__.py",
-  "src/raven_hydro/libraven.py",
+  "src/raven_hydro/libraven.py"
 ]
 exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 
