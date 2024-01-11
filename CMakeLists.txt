@@ -16,7 +16,7 @@ cmake_minimum_required(VERSION 3.24...3.27)
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
-SET(raven_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/raven-src)
+SET(raven_SOURCE_DIR src/RavenHydroFramework)
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)

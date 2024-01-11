@@ -59,7 +59,7 @@ verbose = true
 USE_NETCDF = true
 HELPERS = "helpers"
 ALWAYS_DOWNLOAD = false
-RAVEN_VERSION = "3.7.1"
+RAVEN_VERSION = "3.8"
 RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
 RAVEN_GIT_TAG = "d90233bf2a3ef3839f339900489fa06e355813ec"
 
@@ -73,11 +73,10 @@ include = [
   "CHANGES.md",
   "LICENSE",
   "README.md",
-  "build/_deps/raven-git/src",
   "helpers/FindNetCDF.cmake",
   "src/main.cpp",
   "src/raven_hydro/__init__.py",
-  "src/raven_hydro/_version.py"
+  "src/RavenHydroFramework",
 ]
 exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 

@@ -28,6 +28,10 @@ repos:
       - id: clang-format
         args: [ '-i' ]
         exclude: 'build/_deps/raven-src'
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.16.1
+    hooks:
+      - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.27.3
     hooks:

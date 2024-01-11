@@ -10,6 +10,7 @@ PYBIND11_MODULE(_core, m) {
       R"pbdoc(A Python wrapper to setup and build the hydrologic modelling framework Raven.)pbdoc";
 
   m.attr("__raven_version__") = MACRO_STRINGIFY(RAVEN_VERSION_INFO);
+  m.attr("__netcdf__") = MACRO_STRINGIFY(USE_NETCDF);
 
 #ifdef VERSION_INFO
   m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
