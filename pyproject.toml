@@ -76,7 +76,7 @@ include = [
   "helpers/FindNetCDF.cmake",
   "src/main.cpp",
   "src/raven_hydro/__init__.py",
-  "src/RavenHydroFramework",
+  "src/RavenHydroFramework"
 ]
 exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 
