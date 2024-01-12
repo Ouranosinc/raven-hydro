@@ -50,20 +50,19 @@ ENDIF()
 FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
 FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
 
-# Add source files to build
-source_group("Header Files" FILES ${HEADER})
-source_group("Source Files" FILES ${SOURCE})
-
 # Add Python files
 include_directories(${raven_SOURCE_DIR}/src)
 SET(PYBIND11_NEWPYTHON ON)
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
-pybind11_add_module(libraven MODULE src/main.cpp)
-target_compile_definitions(libraven PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
-target_compile_definitions(libraven PRIVATE VERSION_INFO=${PROJECT_VERSION})
-target_compile_features(libraven PUBLIC cxx_std_11)
-set_target_properties(libraven PROPERTIES LINKER_LANGUAGE CXX)
+pybind11_add_module(_core MODULE src/main.cpp)
+
+# Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
+# target_compile_definitions(_core PUBLIC STANDALONE)
+
+target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
+target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+target_compile_features(_core PUBLIC cxx_std_11)
 
 # Add NetCDF support
 IF(USE_NETCDF)
@@ -79,36 +78,42 @@ IF(USE_NETCDF)
     find_package(ZLIB REQUIRED)
 ENDIF()
 
-# Create executable - file extension is OS dependent (Linux: none, Windows: .exe)
-add_executable(raven
-    ${SOURCE}
-    ${HEADER}
-)
-target_compile_definitions(raven PUBLIC STANDALONE)
-set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
+# Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
+IF(COMPILE_EXE)
+    add_executable(raven
+        ${SOURCE}
+        ${HEADER}
+    )
+    set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
+ENDIF()
 
-# Link Anaconda environment libraries if available, otherwise use system libraries
-# if(NOT "${CONDA_LIBRARY_PATH}" STREQUAL "")
-#     include_directories(${CONDA_LIBRARY_PATH})
-# else()
-#     include_directories(${NetCDF_INCLUDE_DIRS})
-# endif()
+# Add source files to executable
+source_group("Header Files" FILES ${HEADER})
+source_group("Source Files" FILES ${SOURCE})
 
 IF(USE_NETCDF)
     # Link relevant NetCDF libraries to build
     include_directories(${NetCDF_INCLUDE_DIRS})
-    target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
-    target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARIES})
+    target_link_libraries(_core PUBLIC ${NetCDF_LIBRARIES})
+    IF(COMPILE_EXE)
+        target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+    ENDIF()
 ENDIF()
 
 # Install library to environment Python /lib
-INSTALL(TARGETS libraven LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
-IF(WIN32)
-    INSTALL(TARGETS Raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
-ELSE()
-    add_custom_command(
-        TARGET raven POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/raven ${SKBUILD_SCRIPTS_DIR}/raven)
+IF(COMPILE_EXE)
+    IF(WIN32)
+        INSTALL(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
+    ELSE()
+        add_custom_command(
+            TARGET raven POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/raven ${SKBUILD_SCRIPTS_DIR}/raven)
+    ENDIF()
 ENDIF()
+
+# Unset CMake variables to avoid polluting the cache
+unset(COMPILE_LIB CACHE)
+unset(COMPILE_EXE CACHE)

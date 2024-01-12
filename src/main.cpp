@@ -13,7 +13,7 @@ const bool    __HAS_NETCDF__ = false;
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(libraven, m) {
+PYBIND11_MODULE(_core, m) {
   m.doc() =
       R"pbdoc(A Python wrapper to setup and build the hydrologic modelling framework Raven.)pbdoc";
 
