@@ -19,7 +19,7 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 23.12.1
+    rev: 24.1.1
     hooks:
       - id: black
   - repo: https://github.com/Takishima/cmake-pre-commit-hooks
@@ -29,7 +29,7 @@ repos:
         args: [ '-i' ]
         exclude: 'build/_deps/raven-src'
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.27.3
+    rev: 0.27.4
     hooks:
       - id: check-github-workflows
   - repo: meta
