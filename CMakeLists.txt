@@ -57,9 +57,6 @@ find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_core MODULE src/main.cpp)
 
-# Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
-# target_compile_definitions(_core PUBLIC STANDALONE)
-
 target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
 target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
 target_compile_features(_core PUBLIC cxx_std_11)
@@ -84,6 +81,12 @@ IF(COMPILE_EXE)
         ${SOURCE}
         ${HEADER}
     )
+
+    # FIXME: The issue is that one of these flags determines which files are included in the build, See RavenMain.cpp
+    # Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
+    # target_compile_definitions(raven PUBLIC STANDALONE)
+    # target_compile_definitions(raven PUBLIC BMI_LIBRARY)
+
     set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 ENDIF()
 
