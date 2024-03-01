@@ -11,13 +11,13 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-cmake_minimum_required(VERSION 3.24...3.27)
+cmake_minimum_required(VERSION 3.22)
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
 # Set the RavenHydroFramework source directory
-SET(raven_SOURCE_DIR RavenHydroFramework)
+SET(raven_SOURCE_DIR "RavenHydroFramework/src")
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
@@ -46,19 +46,22 @@ ELSE()
     message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
 
+# Add CMake module path
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # Find header & source
-FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
-FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
+include_directories(${raven_SOURCE_DIR})
+FILE(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
+FILE(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
 
 # Add Python files
-include_directories(${raven_SOURCE_DIR}/src)
 SET(PYBIND11_NEWPYTHON ON)
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
 pybind11_add_module(_core MODULE src/main.cpp)
 
-target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
-target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO="${RAVEN_VERSION}" REQUIRED)
+target_compile_definitions(_core PRIVATE VERSION_INFO="${PROJECT_VERSION}")
 target_compile_features(_core PUBLIC cxx_std_11)
 
 # Add NetCDF support
@@ -78,19 +81,20 @@ ENDIF()
 # Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
 IF(COMPILE_EXE)
     add_executable(raven
-        ${SOURCE}
         ${HEADER}
+        ${SOURCE}
     )
+    target_include_directories(raven PUBLIC ${raven_SOURCE_DIR})
 
     # FIXME: The issue is that one of these flags determines which files are included in the build, See RavenMain.cpp
     # Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
-    # target_compile_definitions(raven PUBLIC STANDALONE)
+    target_compile_definitions(raven PUBLIC STANDALONE)
     # target_compile_definitions(raven PUBLIC BMI_LIBRARY)
 
     set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 ENDIF()
 
-# Add source files to executable
+# Add source files
 source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SOURCE})
 

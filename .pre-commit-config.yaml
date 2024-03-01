@@ -6,9 +6,9 @@ repos:
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
-        exclude: 'src/RavenHydroFramework'
+        exclude: 'RavenHydroFramework'
       - id: end-of-file-fixer
-        exclude: 'src/RavenHydroFramework'
+        exclude: 'RavenHydroFramework'
       - id: check-toml
   - repo: https://github.com/pappasam/toml-sort
     rev: v0.23.1
@@ -27,7 +27,7 @@ repos:
     hooks:
       - id: clang-format
         args: [ '-i' ]
-        exclude: 'src/RavenHydroFramework'
+        exclude: 'RavenHydroFramework'
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.1
     hooks:

@@ -50,6 +50,9 @@ end-before = "\n\n<!-- but before this -->"
 build-dir = "build"
 experimental = true
 
+[tool.scikit-build.logging]
+level = "DEBUG"
+
 [tool.scikit-build.cmake]
 minimum-version = "3.24"
 build-type = "Release"
