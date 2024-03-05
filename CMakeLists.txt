@@ -69,7 +69,7 @@ IF(USE_NETCDF)
     find_package(NetCDF REQUIRED)
 
     # Find ZLib library
-    find_package(ZLIB REQUIRED)
+    find_package(ZLIB)
 ENDIF()
 
 # Find header & source
