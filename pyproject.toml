@@ -91,5 +91,4 @@ exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
-install-dir = "raven-hydro"
 license-files = ["LICENSE", "src/RavenHydroFramework/LICENSE"]

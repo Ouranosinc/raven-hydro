@@ -13,8 +13,12 @@
 #    limitations under the License.
 cmake_minimum_required(VERSION 3.22)
 
+# Set default compile options
 option(COMPILE_LIB "If ON, will create a dynamic lib file (default: OFF)" OFF)
 option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
+
+# Add CMake module path
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Set C++ standard explicitly
 set(CMAKE_CXX_STANDARD 11)
@@ -22,7 +26,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Setup Raven Project
-PROJECT(raven_hydro LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
+PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
 # Set the RavenHydroFramework source directory
 SET(raven_SOURCE_DIR "RavenHydroFramework/src")
@@ -54,8 +58,19 @@ ELSE()
     message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
 
-# Add CMake module path
-LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# Add NetCDF support
+IF(USE_NETCDF)
+    # Add NetCDF support flag
+    add_compile_options(-Dnetcdf)
+    message(STATUS "Modified compile flags with '-Dnetcdf'")
+
+    # Find NetCDF library
+    list(APPEND CMAKE_MODULE_PATH ${HELPERS})
+    find_package(NetCDF REQUIRED)
+
+    # Find ZLib library
+    find_package(ZLIB REQUIRED)
+ENDIF()
 
 # Find header & source
 include_directories(${raven_SOURCE_DIR})
@@ -72,20 +87,6 @@ target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO="${RAVEN_VERSION}" R
 target_compile_definitions(_core PRIVATE VERSION_INFO="${PROJECT_VERSION}")
 target_compile_features(_core PUBLIC cxx_std_11)
 target_include_directories(_core PUBLIC ${raven_SOURCE_DIR})
-
-# Add NetCDF support
-IF(USE_NETCDF)
-    # Add NetCDF support flag
-    add_compile_options(-Dnetcdf)
-    message(STATUS "Modified compile flags with '-Dnetcdf'")
-
-    # Find NetCDF library
-    list(APPEND CMAKE_MODULE_PATH ${HELPERS})
-    find_package(NetCDF REQUIRED)
-
-    # Find ZLib library
-    find_package(ZLIB REQUIRED)
-ENDIF()
 
 # Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
 IF(COMPILE_EXE)
@@ -117,7 +118,7 @@ IF(USE_NETCDF)
 ENDIF()
 
 # Install library to environment Python /lib
-INSTALL(TARGETS _core LIBRARY DESTINATION raven_hydro)
+INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
 IF(COMPILE_EXE)
@@ -131,5 +132,5 @@ IF(COMPILE_EXE)
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
-unset(COMPILE_LIB CACHE)
-unset(COMPILE_EXE CACHE)
+# unset(COMPILE_LIB CACHE)
+# unset(COMPILE_EXE CACHE)
