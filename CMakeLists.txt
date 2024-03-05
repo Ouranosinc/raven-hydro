@@ -11,12 +11,26 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-cmake_minimum_required(VERSION 3.24...3.27)
+cmake_minimum_required(VERSION 3.26)
+
+# Set default compile options
+option(COMPILE_LIB "If ON, will create a dynamic lib file (default: OFF)" OFF)
+option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
+option(PYTHON, "If ON, will create a share library for python (default: OFF)" ON)
+
+# Add CMake module path
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# Set C++ standard explicitly
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
-SET(raven_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/raven-src)
+# Set the RavenHydroFramework source code directory
+SET(raven_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework/src)
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
@@ -36,8 +50,8 @@ IF(NOT EXISTS ${raven_SOURCE_DIR} OR ${ALWAYS_DOWNLOAD})
     # Define source library location
     FetchContent_Declare(
         raven
-        URL ${RAVEN_URL}
-        URL_HASH SHA256=${RAVEN_SHA256}
+        GIT_REPOSITORY ${RAVEN_GIT_REPO}
+        GIT_TAG ${RAVEN_GIT_TAG}
         )
     # Fetch remote source files without building them
     FetchContent_Populate(raven)
@@ -45,6 +59,7 @@ ELSE()
     message(STATUS "Sources found: ${raven_SOURCE_DIR}")
 ENDIF()
 
+# Add NetCDF support
 IF(USE_NETCDF)
     # Add NetCDF support flag
     add_compile_options(-Dnetcdf)
@@ -55,62 +70,69 @@ IF(USE_NETCDF)
     find_package(NetCDF REQUIRED)
 
     # Find ZLib library
-    find_package(ZLIB REQUIRED)
+    find_package(ZLIB)
 ENDIF()
 
-# Add Python files
-SET(PYBIND11_NEWPYTHON ON)
-find_package(Python COMPONENTS REQUIRED Interpreter Development)
-find_package(pybind11 CONFIG REQUIRED)
-pybind11_add_module(_core MODULE src/main.cpp)
-target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO=${RAVEN_VERSION} REQUIRED)
-target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
-
 # Find header & source
+include_directories(${raven_SOURCE_DIR})
 FILE(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
 FILE(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
 
-# Add source files to build
-add_executable(raven
-  ${SOURCE}
-  ${HEADER}
-)
+# Add Python files
+if (PYTHON)
+  SET(PYBIND11_NEWPYTHON ON)
+  find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+  find_package(pybind11 CONFIG REQUIRED)
+  pybind11_add_module(libraven MODULE ${raven_SOURCE_DIR}/py/libraven.cpp)
+  target_include_directories(libraven PUBLIC ${raven_SOURCE_DIR})
+  target_compile_features(libraven PUBLIC cxx_std_11)
+  target_compile_definitions(libraven PUBLIC BMI_LIBRARY)
+endif()
+
+# Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
+IF(COMPILE_EXE)
+    add_executable(raven
+        ${HEADER}
+        ${SOURCE}
+    )
+    target_include_directories(raven PUBLIC ${raven_SOURCE_DIR})
+
+    # FIXME: The issue is that one of these flags determines which files are included in the build, See RavenMain.cpp
+    # Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
+    target_compile_definitions(raven PUBLIC STANDALONE)
+    # target_compile_definitions(raven PUBLIC BMI_LIBRARY)
+    set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
+ENDIF()
+
+# Add source files
 source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SOURCE})
-
-# Link Anaconda environment libraries if available, otherwise use system libraries
-# if(NOT "${CONDA_LIBRARY_PATH}" STREQUAL "")
-#     include_directories(${CONDA_LIBRARY_PATH})
-# else()
-#     include_directories(${NetCDF_INCLUDE_DIRS})
-# endif()
 
 IF(USE_NETCDF)
     # Link relevant NetCDF libraries to build
     include_directories(${NetCDF_INCLUDE_DIRS})
-    target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+    IF(PYTHON)
+        target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARIES})
+    ENDIF()
+    IF(COMPILE_EXE)
+        target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+    ENDIF()
 ENDIF()
-
-target_compile_features(raven PUBLIC cxx_std_11)
-set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 
 # Install library to environment Python /lib
-INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+INSTALL(TARGETS libraven LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
-IF(WIN32)
-  install(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
-ELSE()
-  add_custom_command(
-          TARGET raven POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy
-                  ${CMAKE_CURRENT_BINARY_DIR}/raven
-                  ${SKBUILD_SCRIPTS_DIR}/raven)
+IF(COMPILE_EXE)
+    IF(WIN32)
+        INSTALL(TARGETS raven DESTINATION ${SKBUILD_SCRIPTS_DIR})
+    ELSE()
+        add_custom_command(
+            TARGET raven POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/raven ${SKBUILD_SCRIPTS_DIR}/raven)
+    ENDIF()
 ENDIF()
 
-# Add License for Raven after building library
-add_custom_command(
-        TARGET raven POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-                ${raven_SOURCE_DIR}/LICENSE
-                ${SKBUILD_SCRIPTS_DIR}/raven_COPYING)
+# Unset CMake variables to avoid polluting the cache
+unset(COMPILE_LIB CACHE)
+unset(COMPILE_EXE CACHE)

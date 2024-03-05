@@ -1,5 +1,11 @@
 [build-system]
-requires = ["scikit-build-core", "pybind11", "hatchling", "hatch-fancy-pypi-readme"]
+requires = [
+  "hatch-fancy-pypi-readme",
+  "hatchling",
+  "pybind11",
+  "scikit-build-core>=0.8",
+  "setuptools_scm>=8"
+]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -17,17 +23,17 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: Apache Software License",
   "Natural Language :: English",
-  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Scientific/Engineering :: Hydrology"
 ]
 keywords = ["raven", "hydrologic", "model", "cmake"]
-dynamic = ["readme"]
-version = "0.2.4"
+dynamic = ["readme", "version"]
 dependencies = []
 
 [project.urls]
@@ -49,37 +55,64 @@ end-before = "\n\n<!-- but before this -->"
 [tool.scikit-build]
 build-dir = "build"
 experimental = true
+minimum-version = "0.8"
 
 [tool.scikit-build.cmake]
-minimum-version = "3.24"
-build-type = "Release"
+version = ">=3.26.0"
+build-type = "Debug"
 verbose = true
 
 [tool.scikit-build.cmake.define]
-USE_NETCDF = true
-HELPERS = "helpers"
+# specify whether to download the files even in the git submodule has been initialized and pulled
 ALWAYS_DOWNLOAD = false
-RAVEN_VERSION = "3.7"
-RAVEN_URL = "https://www.civil.uwaterloo.ca/raven/files/v3.7/RavenSource_v3.7.zip"
-RAVEN_SHA256 = "1460658be8d47d9d1f3a25ffde881c0c2be72b5ad3b048811142d45b01c62bdb"
+# trigger the exe building block in the CMakeLists.txt
+COMPILE_EXE = true
+# trigger the library building block in the CMakeLists.txt (NOT YET IMPLEMENTED)
+COMPILE_LIB = false
+# trigger the python library building block in the CMakeLists.txt
+PYTHON = true
+# the folder where the netcdf finding script is located
+HELPERS = "helpers"
+# the git repository to download the RavenHydroFramework from and the tag to check out
+RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
+RAVEN_GIT_TAG = "932feca9c281ca079e5567a3db096242440e018e"
+# specify whether to use the netcdf library
+USE_NETCDF = true
+
+[tool.scikit-build.logging]
+level = "DEBUG"
 
 [tool.scikit-build.metadata]
 readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
+version.provider = "scikit_build_core.metadata.setuptools_scm"
 
 [tool.scikit-build.sdist]
 include = [
-  "./CMakeLists.txt",
   "AUTHORS.md",
   "CHANGES.md",
+  "CMakeLists.txt",
   "LICENSE",
   "README.md",
-  "build/_deps/raven-src",
   "helpers/FindNetCDF.cmake",
-  "src/main.cpp",
+  "RavenHydroFramework/AUTHORS.md",
+  "RavenHydroFramework/LICENSE",
+  "RavenHydroFramework/README.md",
+  "RavenHydroFramework/src",
   "src/raven_hydro/__init__.py",
   "src/raven_hydro/_version.py"
 ]
-exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
+exclude = [
+  ".*",
+  "build",
+  "dist",
+  "environment.yml",
+  "Raven_errors.txt",
+  "RavenHydroFramework/benchmarking"
+]
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
+license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]
+
+[tool.setuptools_scm] # Section required
+write_to = "src/raven_hydro/_version.py"

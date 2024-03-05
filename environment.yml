@@ -4,6 +4,11 @@ channels:
   - defaults
 dependencies:
   - python >=3.8
-  - pip
+  - pip >=23.3.0
+  - hatch-fancy-pypi-readme
+  - hatchling
+  - pybind11
+  - scikit-build-core >=0.8
+  - setuptools-scm >=8
   - libnetcdf
   - zlib
