@@ -107,9 +107,9 @@ jobs:
       - name: Test raven-hydro
         if: ${{ !matrix.conda }}
         run: |
-          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__doc__}')"
-          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__netcdf__}')"
-          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__raven_version__}')"
+          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'Description: {raven_hydro.__doc__}')"
+          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'Built with netcdf: {raven_hydro.__netcdf__}')"
+          ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'RavenHydroFramework version: {raven_hydro.__raven_version__}')"
           ${{ steps.pyinstalled.outputs.python-path }} -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
 
       - name: Install raven-hydro (conda)
@@ -125,9 +125,9 @@ jobs:
       - name: Test raven-hydro (conda)
         if: ${{ matrix.conda }}
         run: |
-          python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__doc__}')"
-          python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__netcdf__}')"
-          python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__raven_version__}')"
+          python -c "import raven_hydro; print(f'Description: {raven_hydro.__doc__}')"
+          python -c "import raven_hydro; print(f'Built with netcdf: {raven_hydro.__netcdf__}')"
+          python -c "import raven_hydro; print(f'RavenHydroFramework version: {raven_hydro.__raven_version__}')"
           python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
 
       - name: Test raven
