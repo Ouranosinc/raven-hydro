@@ -17,12 +17,13 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: Apache Software License",
   "Natural Language :: English",
-  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Scientific/Engineering :: Hydrology"
 ]
 keywords = ["raven", "hydrologic", "model", "cmake"]
@@ -90,4 +91,4 @@ exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
-license-files = ["LICENSE", "src/RavenHydroFramework/LICENSE"]
+license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]

@@ -28,8 +28,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
-# Set the RavenHydroFramework source directory
-SET(raven_SOURCE_DIR "RavenHydroFramework/src")
+# Set the RavenHydroFramework source code directory
+SET(raven_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework/src)
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
@@ -132,5 +132,5 @@ IF(COMPILE_EXE)
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
-# unset(COMPILE_LIB CACHE)
-# unset(COMPILE_EXE CACHE)
+unset(COMPILE_LIB CACHE)
+unset(COMPILE_EXE CACHE)
