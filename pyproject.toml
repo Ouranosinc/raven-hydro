@@ -1,5 +1,11 @@
 [build-system]
-requires = ["scikit-build-core>=0.8", "pybind11", "hatchling", "hatch-fancy-pypi-readme", "setuptools_scm>=8"]
+requires = [
+  "hatch-fancy-pypi-readme",
+  "hatchling",
+  "pybind11",
+  "scikit-build-core>=0.8",
+  "setuptools_scm>=8"
+]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -61,11 +67,13 @@ verbose = true
 ALWAYS_DOWNLOAD = false
 # trigger the exe building block in the CMakeLists.txt
 COMPILE_EXE = true
+# trigger the library building block in the CMakeLists.txt (NOT YET IMPLEMENTED)
+COMPILE_LIB = false
 # trigger the python library building block in the CMakeLists.txt
 PYTHON = true
 # the folder where the netcdf finding script is located
 HELPERS = "helpers"
-# the git repository to download the RavenHydroFramework from and the tag to checkout
+# the git repository to download the RavenHydroFramework from and the tag to check out
 RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
 RAVEN_GIT_TAG = "932feca9c281ca079e5567a3db096242440e018e"
 # specify whether to use the netcdf library
