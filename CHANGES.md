@@ -12,6 +12,7 @@
     * `hatchling`
     * `scikit-build-core` >=v0.8.0
     * `setuptools_scm` >=8.0.0
+* Now using `dependabot` for dependency and workflow management.
 
 ## 0.2.4 (2023-08-25)
 
