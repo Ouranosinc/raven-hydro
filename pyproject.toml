@@ -51,7 +51,7 @@ build-dir = "build"
 experimental = true
 
 [tool.scikit-build.cmake]
-minimum-version = "3.24"
+minimum-version = "3.26"
 build-type = "Debug"
 verbose = true
 
@@ -85,7 +85,6 @@ include = [
   "src/RavenHydroFramework",
   "src/main.cpp",
   "src/raven_hydro/__init__.py",
-  "src/raven_hydro/libraven.py"
 ]
 exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
 
