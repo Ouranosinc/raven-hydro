@@ -13,8 +13,16 @@
 #    limitations under the License.
 cmake_minimum_required(VERSION 3.22)
 
+option(COMPILE_LIB "If ON, will create a dynamic lib file (default: OFF)" OFF)
+option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
+
+# Set C++ standard explicitly
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Setup Raven Project
-PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
+PROJECT(raven_hydro LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
 # Set the RavenHydroFramework source directory
 SET(raven_SOURCE_DIR "RavenHydroFramework/src")
@@ -63,6 +71,7 @@ pybind11_add_module(_core MODULE src/main.cpp)
 target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO="${RAVEN_VERSION}" REQUIRED)
 target_compile_definitions(_core PRIVATE VERSION_INFO="${PROJECT_VERSION}")
 target_compile_features(_core PUBLIC cxx_std_11)
+target_include_directories(_core PUBLIC ${raven_SOURCE_DIR})
 
 # Add NetCDF support
 IF(USE_NETCDF)
@@ -108,7 +117,7 @@ IF(USE_NETCDF)
 ENDIF()
 
 # Install library to environment Python /lib
-INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+INSTALL(TARGETS _core LIBRARY DESTINATION raven_hydro)
 
 # Install binary to environment /bin
 IF(COMPILE_EXE)

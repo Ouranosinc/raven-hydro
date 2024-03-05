@@ -2,10 +2,9 @@
 #include <pybind11/pybind11.h>
 
 #ifdef _RVNETCDF_
-const bool __HAS_NETCDF__ = true;
-#endif
-#ifndef _RVNETCDF_
-const bool __HAS_NETCDF__ = false;
+    const bool __HAS_NETCDF__ = true;
+#else
+    const bool __HAS_NETCDF__ = false;
 #endif
 
 #define STRINGIFY(x) #x

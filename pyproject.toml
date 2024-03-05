@@ -52,7 +52,7 @@ experimental = true
 
 [tool.scikit-build.cmake]
 minimum-version = "3.24"
-build-type = "Release"
+build-type = "Debug"
 verbose = true
 
 [tool.scikit-build.cmake.define]
