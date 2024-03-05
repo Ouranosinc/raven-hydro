@@ -1,5 +1,18 @@
 # Changes
 
+## 0.3.0 (2024--soon)
+
+* Updated the `RavenHydroFramework` to v3.8.
+* `raven-hydro` now builds `RavenHydroFramework` directly from the GitHub official source code base.
+    * Additionally, the `raven-hydro` package now includes the `RavenHydroFramework` source code in the source distribution.
+* `raven-hydro` now supports Python 3.12.
+* `raven-hydro` now requires:
+    * `cmake` >=3.26.0
+    * `hatch-fancy-pypi-readme`
+    * `hatchling`
+    * `scikit-build-core` >=v0.8.0
+    * `setuptools_scm` >=8.0.0
+
 ## 0.2.4 (2023-08-25)
 
 * Raven-hydro now supports `cmake` v2.37 and follows better Python discovery conventions.
