@@ -3,3 +3,6 @@ build
 
 #IDEs
 .idea
+
+# Python
+src/raven_hydro/_version.py
