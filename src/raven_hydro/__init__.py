@@ -15,6 +15,7 @@
 """
 
 from .libraven import __doc__, __netcdf__, __version__
+
 __raven_version__ = __version__
 from ._version import __version__
 
