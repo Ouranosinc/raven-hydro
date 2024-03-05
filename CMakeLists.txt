@@ -16,6 +16,7 @@ cmake_minimum_required(VERSION 3.26)
 # Set default compile options
 option(COMPILE_LIB "If ON, will create a dynamic lib file (default: OFF)" OFF)
 option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
+option(PYTHON, "If ON, will create a share library for python (default: OFF)" ON)
 
 # Add CMake module path
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -78,15 +79,15 @@ FILE(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
 FILE(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
 
 # Add Python files
-SET(PYBIND11_NEWPYTHON ON)
-find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
-find_package(pybind11 CONFIG REQUIRED)
-pybind11_add_module(_core MODULE src/main.cpp)
-
-target_compile_definitions(_core PRIVATE RAVEN_VERSION_INFO="${RAVEN_VERSION}" REQUIRED)
-target_compile_definitions(_core PRIVATE VERSION_INFO="${PROJECT_VERSION}")
-target_compile_features(_core PUBLIC cxx_std_11)
-target_include_directories(_core PUBLIC ${raven_SOURCE_DIR})
+if (PYTHON)
+  SET(PYBIND11_NEWPYTHON ON)
+  find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+  find_package(pybind11 CONFIG REQUIRED)
+  pybind11_add_module(libraven MODULE ${raven_SOURCE_DIR}/py/libraven.cpp)
+  target_include_directories(libraven PUBLIC ${raven_SOURCE_DIR})
+  target_compile_features(libraven PUBLIC cxx_std_11)
+  target_compile_definitions(libraven PUBLIC BMI_LIBRARY)
+endif()
 
 # Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
 IF(COMPILE_EXE)
@@ -100,7 +101,6 @@ IF(COMPILE_EXE)
     # Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
     target_compile_definitions(raven PUBLIC STANDALONE)
     # target_compile_definitions(raven PUBLIC BMI_LIBRARY)
-
     set_target_properties(raven PROPERTIES LINKER_LANGUAGE CXX)
 ENDIF()
 
@@ -111,14 +111,16 @@ source_group("Source Files" FILES ${SOURCE})
 IF(USE_NETCDF)
     # Link relevant NetCDF libraries to build
     include_directories(${NetCDF_INCLUDE_DIRS})
-    target_link_libraries(_core PUBLIC ${NetCDF_LIBRARIES})
+    IF(PYTHON)
+        target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARIES})
+    ENDIF()
     IF(COMPILE_EXE)
         target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
     ENDIF()
 ENDIF()
 
 # Install library to environment Python /lib
-INSTALL(TARGETS _core LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
+INSTALL(TARGETS libraven LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Install binary to environment /bin
 IF(COMPILE_EXE)
