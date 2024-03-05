@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit-build-core>=0.8", "pybind11", "hatchling", "hatch-fancy-pypi-readme", "setuptools_scm"]
+requires = ["scikit-build-core>=0.8", "pybind11", "hatchling", "hatch-fancy-pypi-readme", "setuptools_scm>=8"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -86,11 +86,21 @@ include = [
   "LICENSE",
   "README.md",
   "helpers/FindNetCDF.cmake",
-  "src/RavenHydroFramework",
+  "RavenHydroFramework/AUTHORS.md",
+  "RavenHydroFramework/LICENSE",
+  "RavenHydroFramework/README.md",
+  "RavenHydroFramework/src",
   "src/raven_hydro/__init__.py",
   "src/raven_hydro/_version.py"
 ]
-exclude = [".*", "build", "dist", "environment.yml", "Raven_errors.txt"]
+exclude = [
+  ".*",
+  "build",
+  "dist",
+  "environment.yml",
+  "Raven_errors.txt",
+  "RavenHydroFramework/benchmarking"
+]
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
