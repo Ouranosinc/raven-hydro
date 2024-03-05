@@ -86,7 +86,6 @@ include = [
   "README.md",
   "helpers/FindNetCDF.cmake",
   "src/RavenHydroFramework",
-  "src/main.cpp",
   "src/raven_hydro/__init__.py",
   "src/raven_hydro/_version.py"
 ]
