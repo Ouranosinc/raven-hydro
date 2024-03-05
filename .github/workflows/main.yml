@@ -6,28 +6,21 @@ on:
       - main
   pull_request:
 
+concurrency:
+  # For a given workflow, if we push to the same branch, cancel all previous builds on that branch except on main.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   black:
     name: Code linting
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
     steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
-      - name: Install pre-commit
-        run: |
-          pip install pre-commit
-      - name: Run linting suite
-        run: |
-          pre-commit run --all-files
+          python-version: "3.x"
+      - uses:  pre-commit/action@v3.0.1
 
   build:
     name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}, args=${{ matrix.install_args }})
