@@ -131,6 +131,12 @@ IF(COMPILE_EXE)
             TARGET raven POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/raven ${SKBUILD_SCRIPTS_DIR}/raven)
     ENDIF()
+
+    # Add License for Raven after building library
+    add_custom_command(
+        TARGET raven POST_BUILD
+        # FIXME: This needs to be updated to the correct location, ideally in the package directory alongside the other license files
+        COMMAND ${CMAKE_COMMAND} -E copy ${raven_SOURCE_DIR}/LICENSE ${SKBUILD_SCRIPTS_DIR}/raven_COPYING)
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
