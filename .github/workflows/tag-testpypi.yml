@@ -78,6 +78,7 @@ jobs:
     name: Publish Python 🐍 distributions 📦 to TestPyPI
     needs: build
     runs-on: ubuntu-latest
+    environment: staging
     permissions:
     # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
