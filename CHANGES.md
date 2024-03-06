@@ -1,6 +1,6 @@
 # Changes
 
-## 0.3.0 (2024--soon)
+## 0.3.0 (2024-03-06)
 
 * Updated the `RavenHydroFramework` to v3.8.
 * `raven-hydro` now builds `RavenHydroFramework` directly from the GitHub official source code base.
