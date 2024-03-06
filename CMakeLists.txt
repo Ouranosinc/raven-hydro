@@ -30,7 +30,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
 # Set the RavenHydroFramework source code directory
-SET(raven_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework/src)
+SET(raven_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework)
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
@@ -75,16 +75,16 @@ ENDIF()
 
 # Find header & source
 include_directories(${raven_SOURCE_DIR})
-FILE(GLOB HEADER "${raven_SOURCE_DIR}/*.h")
-FILE(GLOB SOURCE "${raven_SOURCE_DIR}/*.cpp")
+FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
+FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
 
 # Add Python files
 if (PYTHON)
   SET(PYBIND11_NEWPYTHON ON)
   find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
   find_package(pybind11 CONFIG REQUIRED)
-  pybind11_add_module(libraven MODULE ${raven_SOURCE_DIR}/py/libraven.cpp)
-  target_include_directories(libraven PUBLIC ${raven_SOURCE_DIR})
+  pybind11_add_module(libraven MODULE "${raven_SOURCE_DIR}/src/py/libraven.cpp")
+  target_include_directories(libraven PUBLIC "${raven_SOURCE_DIR}/src")
   target_compile_features(libraven PUBLIC cxx_std_11)
   target_compile_definitions(libraven PUBLIC BMI_LIBRARY)
 endif()
@@ -95,7 +95,7 @@ IF(COMPILE_EXE)
         ${HEADER}
         ${SOURCE}
     )
-    target_include_directories(raven PUBLIC ${raven_SOURCE_DIR})
+    target_include_directories(raven PUBLIC ${raven_SOURCE_DIR}/src)
 
     # FIXME: The issue is that one of these flags determines which files are included in the build, See RavenMain.cpp
     # Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
