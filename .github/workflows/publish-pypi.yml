@@ -64,7 +64,7 @@ jobs:
         if: |
           (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.8')
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: |
             dist/*.tar.gz
