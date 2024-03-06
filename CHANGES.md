@@ -13,6 +13,7 @@
     * `scikit-build-core` >=v0.8.0
     * `setuptools_scm` >=8.0.0
 * Now using `dependabot` for dependency and workflow management.
+* Now using TestPyPI and PyPI Trusted Publishers infrastructure for signing and verification of packages.
 
 ## 0.2.4 (2023-08-25)
 

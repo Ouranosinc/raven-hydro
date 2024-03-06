@@ -3,7 +3,10 @@ name: Publish Python 🐍 distributions 📦 to TestPyPI
 on:
   push:
     tags:
-      - '*'
+      - 'v*.*.*'
+
+permissions:
+  contents: read
 
 jobs:
   # Wheels no longer offered until library linking is clarified.
@@ -13,11 +16,11 @@ jobs:
     strategy:
 #      fail-fast: false
       matrix:
-#        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+#        os: ["ubuntu-latest", "macos-latest"]
 #        python-version: ["3.8", "3.9", "3.10", "3.11"]
         include:
           - os: ubuntu-latest
-            python-version: "3.8"
+            python-version: "3.x"
     defaults:
       run:
         shell: bash -l {0}
@@ -26,7 +29,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up Python3
-        if: ${{ matrix.os != 'windows-latest' }}
         id: pyinstalled
         uses: actions/setup-python@v5
         with:
@@ -63,22 +65,22 @@ jobs:
 #        run: ${{ steps.pyinstalled.outputs.python-path }} -m build --wheel
       - name: Build a source tarball (Ubuntu)
         if: |
-          (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.8')
+          (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.x')
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
       - uses: actions/upload-artifact@v4
         with:
           path: |
             dist/*.tar.gz
-            dist/*.whl
+#            dist/*.whl
           if-no-files-found: error
 
   publish-testpypi:
     name: Publish Python 🐍 distributions 📦 to TestPyPI
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
+    permissions:
+    # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         id: download
@@ -88,8 +90,6 @@ jobs:
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           print-hash: true
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true
