@@ -113,7 +113,7 @@ exclude = [
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
-license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]
+license-files = ["LICENSE"]
 
 [tool.setuptools_scm] # Section required
 write_to = "src/raven_hydro/_version.py"

@@ -132,12 +132,12 @@ IF(COMPILE_EXE)
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/raven" "${SKBUILD_SCRIPTS_DIR}/raven")
     ENDIF()
 
-    # Add License for Raven after building library
+    # Add License for Raven after building library from cmake-fetched source
     add_custom_command(
         TARGET raven POST_BUILD
         # FIXME: This needs to be updated to the correct location, ideally in the package directory alongside the other license files
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${SKBUILD_SCRIPTS_DIR}/RavenHydroFramework")
-        COMMAND ${CMAKE_COMMAND} -E copy "${raven_SOURCE_DIR}/LICENSE" "${SKBUILD_SCRIPTS_DIR}/RavenHydroFramework/raven_COPYING")
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework"
+        COMMAND ${CMAKE_COMMAND} -E copy "${raven_SOURCE_DIR}/LICENSE" "${SKBUILD_PLATLIB_DIR}/RavenHydroFramework/LICENSE")
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
