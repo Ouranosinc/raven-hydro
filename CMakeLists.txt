@@ -30,7 +30,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
 
 # Set the RavenHydroFramework source code directory
-SET(raven_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework)
+SET(raven_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework")
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
@@ -95,7 +95,7 @@ IF(COMPILE_EXE)
         ${HEADER}
         ${SOURCE}
     )
-    target_include_directories(raven PUBLIC ${raven_SOURCE_DIR}/src)
+    target_include_directories(raven PUBLIC "${raven_SOURCE_DIR}/src")
 
     # FIXME: The issue is that one of these flags determines which files are included in the build, See RavenMain.cpp
     # Add flag to indicate which version of ExitGracefully to use (set in RavenMain.cpp)
@@ -129,14 +129,15 @@ IF(COMPILE_EXE)
     ELSE()
         add_custom_command(
             TARGET raven POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/raven ${SKBUILD_SCRIPTS_DIR}/raven)
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/raven" "${SKBUILD_SCRIPTS_DIR}/raven")
     ENDIF()
 
     # Add License for Raven after building library
     add_custom_command(
         TARGET raven POST_BUILD
         # FIXME: This needs to be updated to the correct location, ideally in the package directory alongside the other license files
-        COMMAND ${CMAKE_COMMAND} -E copy ${raven_SOURCE_DIR}/LICENSE ${SKBUILD_SCRIPTS_DIR}/raven_COPYING)
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${SKBUILD_SCRIPTS_DIR}/RavenHydroFramework")
+        COMMAND ${CMAKE_COMMAND} -E copy "${raven_SOURCE_DIR}/LICENSE" "${SKBUILD_SCRIPTS_DIR}/RavenHydroFramework/raven_COPYING")
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
