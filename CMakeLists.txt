@@ -136,7 +136,6 @@ IF(COMPILE_EXE)
         # Add license for RavenHydroFramework to source distribution after building library from sources (fetched via Cmake_FetchContent)
         add_custom_command(
             TARGET raven POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework"
             COMMAND ${CMAKE_COMMAND} -E copy "${raven_SOURCE_DIR}/LICENSE" "${SKBUILD_PLATLIB_DIR}/RavenHydroFramework/LICENSE")
     ENDIF()
 ENDIF()
