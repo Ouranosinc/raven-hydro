@@ -1,6 +1,6 @@
 # Changes
 
-## 0.3.0 (2024-03-06)
+## 0.3.0 (2024-03-07)
 
 * Updated the `RavenHydroFramework` to v3.8.
 * `raven-hydro` now builds `RavenHydroFramework` directly from the GitHub official source code base.
@@ -14,6 +14,7 @@
     * `setuptools_scm` >=8.0.0
 * Now using `dependabot` for dependency and workflow management.
 * Now using TestPyPI and PyPI Trusted Publishers infrastructure for signing and verification of packages.
+* Numerous packaging fixes to ensure conformant and license-compliant packaging.
 
 ## 0.2.4 (2023-08-25)
 
