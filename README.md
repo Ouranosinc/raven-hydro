@@ -14,13 +14,16 @@ Raven-hydro is a Python-based installer for the hydrologic modelling framework [
 
 ### Purpose
 
-The goal of this project is to provide a multiplatform installer for the Raven hydrological model using [scikit-build-core](https://github.com/scikit-build/scikit-build-core) and [pybind11](https://github.com/pybind/pybind11). The compiled binary is built with support for [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/), and uses a custom `CMakeLists.txt`, rather than the one provided with the [Raven source code](http://raven.uwaterloo.ca/Downloads.html), in order to leverage `pip` for handling the installation of binaries and libraries.
+The goal of this project is to provide a Python-based multiplatform installer for the Raven hydrological model using [scikit-build-core](https://github.com/scikit-build/scikit-build-core) and [pybind11](https://github.com/pybind/pybind11). The compiled binary is built with support for [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/), and uses a custom `CMakeLists.txt`, rather than the one provided with the [Raven source code](http://raven.uwaterloo.ca/Downloads.html), in order to leverage *pip* for handling the installation and management of binaries and libraries.
 
-This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by solely providing a means for downloading, compiling, and installing the Raven binary (with NetCDF4 support) on multiple platforms and as well as providing version control and updating via `pip`/PyPI.
+This project differs from [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by solely providing a means for downloading, compiling, and installing the Raven binary (with NetCDF4 support) on multiple platforms and as well as providing version control and updating via *pip*/PyPI.
+
+The source code for Raven is not included in this repository, but is fetched from the releases of [RavenHydroFramework GitHub repository](https://github.com/CSHS-CWRA/RavenHydroFramework) and compiled during the installation process.
 
 ### Features
 
-- Download and/or compile the Raven hydrological model with `pip`
+- Download, compile, version control, and package updating of the Raven Hydrologic model via *pip*/PyPI
+- Preserve copyright notices and licensing information
 - Multiplatform support (macOS, Linux, Windows, BSD, etc.)
 
 ### Installation
