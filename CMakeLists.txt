@@ -132,8 +132,8 @@ IF(COMPILE_EXE)
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/raven" "${SKBUILD_SCRIPTS_DIR}/raven")
     ENDIF()
 
-    IF(NOT ${SKBUILD_STATE} STREQUAL "wheel")
-        # Add license for RavenHydroFramework to source distribution after building library from sources (not wheel)
+    IF(${raven_POPULATED})
+        # Add license for RavenHydroFramework to source distribution after building library from sources (fetched via Cmake_FetchContent)
         add_custom_command(
             TARGET raven POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework"
