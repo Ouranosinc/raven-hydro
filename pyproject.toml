@@ -32,7 +32,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Scientific/Engineering :: Hydrology"
 ]
-keywords = ["raven", "hydrologic", "model", "cmake"]
+keywords = ["raven", "hydrologic", "hydrology", "model", "cmake", "scikit-build", "pybind11", "python", "wrapper"]
 dynamic = ["readme", "version"]
 dependencies = []
 
@@ -113,7 +113,7 @@ exclude = [
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]
 
 [tool.setuptools_scm] # Section required
 write_to = "src/raven_hydro/_version.py"
