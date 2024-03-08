@@ -27,13 +27,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set default build type in CMake if skbuild is set
-IF(FORCE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE "${FORCE_BUILD_TYPE_VALUE}" CACHE STRING "Overwrite build type" FORCE)
-    message(STATUS "Force modified CMAKE_BUILD_TYPE to '${FORCE_BUILD_TYPE_VALUE}'")
-ENDIF()
+message(STATUS "CMAKE_BUILD_TYPE set to '${CMAKE_BUILD_TYPE}'")
 
 # Remove deprecation warnings for GCC
-IF(CMAKE_COMPILER_IS_GNUCXX)
+IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-deprecated)
     message(STATUS "Modified compile flags with '-Wno-deprecated'")
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
