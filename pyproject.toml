@@ -71,6 +71,9 @@ ALWAYS_DOWNLOAD = false
 COMPILE_EXE = true
 # trigger the library building block in the CMakeLists.txt (NOT YET IMPLEMENTED)
 COMPILE_LIB = false
+# force build type
+FORCE_BUILD_TYPE = true
+FORCE_BUILD_TYPE_VALUE = "Debug"
 # trigger the python library building block in the CMakeLists.txt
 PYTHON = true
 # the folder where the netcdf finding script is located

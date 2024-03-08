@@ -26,17 +26,23 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Setup Raven Project
-PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
-
-# Set the RavenHydroFramework source code directory
-SET(raven_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework")
+# Set default build type in CMake if skbuild is set
+IF(FORCE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE "${FORCE_BUILD_TYPE_VALUE}" CACHE STRING "Overwrite build type" FORCE)
+    message(STATUS "Force modified CMAKE_BUILD_TYPE to '${FORCE_BUILD_TYPE_VALUE}'")
+ENDIF()
 
 # Remove deprecation warnings for GCC
 IF(CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options(-Wno-deprecated)
     message(STATUS "Modified compile flags with '-Wno-deprecated'")
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+
+# Setup Raven Project
+PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
+
+# Set the RavenHydroFramework source code directory
+SET(raven_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RavenHydroFramework")
 
 IF(NOT EXISTS ${raven_SOURCE_DIR} OR ${ALWAYS_DOWNLOAD})
     IF(NOT EXISTS ${raven_SOURCE_DIR})
