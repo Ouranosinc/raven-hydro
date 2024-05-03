@@ -61,7 +61,7 @@ minimum-version = "0.8"
 
 [tool.scikit-build.cmake]
 version = ">=3.26.0"
-build-type = "Debug"
+build-type = "Release"
 verbose = true
 
 [tool.scikit-build.cmake.define]
@@ -71,8 +71,6 @@ ALWAYS_DOWNLOAD = false
 COMPILE_EXE = true
 # trigger the library building block in the CMakeLists.txt (NOT YET IMPLEMENTED)
 COMPILE_LIB = false
-# override build type
-CMAKE_BUILD_TYPE = {env = "RAVEN_HYDRO_CMAKE_BUILD_TYPE", Default = "Debug"}
 # trigger the python library building block in the CMakeLists.txt
 PYTHON = true
 # the folder where the netcdf finding script is located
