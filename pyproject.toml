@@ -40,7 +40,7 @@ dependencies = []
 
 [project.urls]
 "About Ouranos" = "https://www.ouranos.ca/en"
-"About Raven" = "http://raven.uwaterloo.ca/About.html"
+"About Raven" = "https://raven.uwaterloo.ca/About.html"
 "Homepage" = "https://github.com/Ouranosinc/raven-hydro"
 "Issue tracker" = "https://github.com/Ouranosinc/raven-hydro/issues"
 
@@ -77,7 +77,7 @@ PYTHON = true
 HELPERS = "helpers"
 # the git repository to download the RavenHydroFramework from and the tag to check out
 RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
-RAVEN_GIT_TAG = "932feca9c281ca079e5567a3db096242440e018e"
+RAVEN_GIT_TAG = "2512970bca65009c55906dc50a4d22bb5d727fe4"
 # specify whether to use the netcdf library
 USE_NETCDF = true
 
