@@ -1,5 +1,10 @@
 # Changes
 
+## 0.3.1 (unreleased)
+
+* Updated the `RavenHydroFramework` to v3.8.1.
+* `raven-hydro` now supports `cmake` v3.23.
+
 ## 0.3.0 (2024-03-07)
 
 * Updated the `RavenHydroFramework` to v3.8.
