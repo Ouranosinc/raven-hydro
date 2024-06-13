@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.1 (unreleased)
+
+* Updated the `RavenHydroFramework` to v3.8.1.
+* `RavenHydroFramework` now compiles with the ``Release`` build type by default.
+* `raven-hydro` now requires `scikit-build-core` v0.9 and `cmake` v3.26.1.
+
 ## 0.3.0 (2024-03-07)
 
 * Updated the `RavenHydroFramework` to v3.8.
