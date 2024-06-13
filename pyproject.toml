@@ -95,7 +95,7 @@ version = ">=1.11.0"
 include = [
   ".zenodo.json",
   "AUTHORS.md",
-  "CHANGES.md",
+  "CHANGELOG.md",
   "CMakeLists.txt",
   "LICENSE",
   "README.md",
