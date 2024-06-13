@@ -57,7 +57,7 @@ end-before = "\n\n<!-- but before this -->"
 [tool.scikit-build]
 build-dir = "build"
 experimental = true
-minimum-version = "0.8"
+minimum-version = "0.9"
 
 [tool.scikit-build.cmake]
 version = ">=3.26.1"
