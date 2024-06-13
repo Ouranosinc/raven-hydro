@@ -4,17 +4,17 @@
 
 <!-- cut after this -->
 
-Raven-hydro is a Python-based installer for the hydrologic modelling framework [Raven](http://raven.uwaterloo.ca/).
+Raven-hydro is a Python-based installer for the hydrologic modelling framework [Raven](https://raven.uwaterloo.ca/).
 
 - Free software: Apache Software License v2.0
 
 ### About
 
-[Raven](http://raven.uwaterloo.ca) is a hydrological modeling framework that lets hydrologists build hydrological models by combining different hydrological processes together. It can also be used to emulate a variety of existing lumped and distributed models. Model structure, parameters, initial conditions and forcing files are configured in text files, which Raven parses to build and run hydrological simulations. A detailed description about modeling capability of Raven can be found in the [docs](https://www.civil.uwaterloo.ca/raven/files/v3.6/RavenManual_v3.6.pdf).
+[Raven](https://raven.uwaterloo.ca) is a hydrological modeling framework that lets hydrologists build hydrological models by combining different hydrological processes together. It can also be used to emulate a variety of existing lumped and distributed models. Model structure, parameters, initial conditions and forcing files are configured in text files, which Raven parses to build and run hydrological simulations. A detailed description about modeling capability of Raven can be found in the [docs](https://raven.uwaterloo.ca/files/v3.8/RavenManual_v3.8.pdf).
 
 ### Purpose
 
-The goal of this project is to provide a Python-based multiplatform installer for the Raven hydrological model using [scikit-build-core](https://github.com/scikit-build/scikit-build-core) and [pybind11](https://github.com/pybind/pybind11). The compiled binary is built with support for [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/), and uses a custom `CMakeLists.txt`, rather than the one provided with the [Raven source code](http://raven.uwaterloo.ca/Downloads.html), in order to leverage *pip* for handling the installation and management of binaries and libraries.
+The goal of this project is to provide a Python-based multiplatform installer for the Raven hydrological model using [scikit-build-core](https://github.com/scikit-build/scikit-build-core) and [pybind11](https://github.com/pybind/pybind11). The compiled binary is built with support for [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/), and uses a custom `CMakeLists.txt`, rather than the one provided with the [Raven source code](https://raven.uwaterloo.ca/Downloads.html), in order to leverage *pip* for handling the installation and management of binaries and libraries.
 
 This project supports [RavenPy](https://github.com/CSHS-CWRA/RavenPy) by providing a dedicated library for downloading, compiling, and installing the Raven binary (with NetCDF4 support by default) on multiple platforms, as well as providing version control and updates via *pip*/PyPI.
 
