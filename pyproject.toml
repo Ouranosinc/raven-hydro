@@ -57,7 +57,7 @@ end-before = "\n\n<!-- but before this -->"
 [tool.scikit-build]
 build-dir = "build"
 experimental = true
-minimum-version = "0.8"
+minimum-version = "0.9"
 
 [tool.scikit-build.cmake]
 version = ">=3.26.1"
@@ -95,7 +95,7 @@ version = ">=1.11.0"
 include = [
   ".zenodo.json",
   "AUTHORS.md",
-  "CHANGES.md",
+  "CHANGELOG.md",
   "CMakeLists.txt",
   "LICENSE",
   "README.md",
