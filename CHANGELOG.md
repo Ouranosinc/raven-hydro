@@ -1,6 +1,6 @@
 # Changes
 
-## 0.3.1 (2024-06-13)
+## 0.3.1 (2024-06-17)
 
 * Updated the `RavenHydroFramework` to v3.8.1.
 * `RavenHydroFramework` now compiles with the ``Release`` build type by default.
