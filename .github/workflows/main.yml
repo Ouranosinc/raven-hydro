@@ -16,11 +16,19 @@ jobs:
     name: Code linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Harden Runner
+        uses: step-security/harden-runner@5c7944e73c4c2a096b17a9cb74d65b6c2bbafbde # v2.9.1
+        with:
+          egress-policy: audit
+      - name: Checkout Repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Python3
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
           python-version: "3.x"
-      - uses:  pre-commit/action@v3.0.1
+          cache: "pip"
+      - name: Run pre-commit hooks
+        uses:  pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
   build:
     name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}, args=${{ matrix.install_args }})
@@ -29,12 +37,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13.0-rc.1"]
         os:
           - ubuntu-latest
 #          - macos-latest  # macOS with Apple Silicon is not supported yet
-        conda: [false]
-        install_args: [""]
+        conda: [ false ]
+        install_args: [ "" ]
         include:
           - python-version: "3.8"
             os: windows-latest
@@ -66,16 +74,18 @@ jobs:
         uses: step-security/harden-runner@5c7944e73c4c2a096b17a9cb74d65b6c2bbafbde # v2.9.1
         with:
           egress-policy: audit
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Checkout Repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           fetch-depth: 0
           submodules: true
-      - name: Set up Python${{ matrix.python-version }}
+      - name: Setup Python${{ matrix.python-version }}
         if: ${{ !matrix.conda }}
         id: pyinstalled
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
           python-version: ${{ matrix.python-version }}
+          cache: "pip"
       - name: Set up Python${{ matrix.python-version }} with NetCDF4 (conda)
         if: ${{ matrix.conda }}
         uses: mamba-org/setup-micromamba@f8b8a1e23a26f60a44c853292711bacfd3eac822 # v1.9.0
