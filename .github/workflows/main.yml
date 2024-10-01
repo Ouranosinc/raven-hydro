@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13.0-rc.1"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13.0-rc.2"]
         os:
           - ubuntu-latest
 #          - macos-latest  # macOS with Apple Silicon is not supported yet
@@ -95,6 +95,7 @@ jobs:
           environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
+          micromamba-version: "1.5.10-0"  # pinned to avoid the breaking changes with mamba and micromamba (2.0.0).
 
       - name: Install NetCDF4 (Ubuntu/apt)
         if: (matrix.os == 'ubuntu-latest') && (!matrix.install_args) && (!matrix.conda)
@@ -106,7 +107,7 @@ jobs:
         uses: tecolicom/actions-use-homebrew-tools@b9c066b79607fa3d71e0be05d7003bb75fd9ff34 # v1.3.0
         with:
           tools: netcdf
-          cache: yes
+          cache: "yes"
       - name: Check for OPeNDAP Support
         if: (!matrix.install_args)
         run: |
