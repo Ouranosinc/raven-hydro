@@ -100,7 +100,7 @@ jobs:
           name: artifact
           path: dist
       - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@8a08d616893759ef8e1aa1f2785787c0b97e20d6 # v1.10.0
+        uses: pypa/gh-action-pypi-publish@897895f1e160c830e369f9779632ebc134688e1b # v1.10.2
         with:
           print-hash: true
           repository-url: https://test.pypi.org/legacy/
