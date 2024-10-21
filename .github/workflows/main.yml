@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13.0-rc.2"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         os:
           - ubuntu-latest
 #          - macos-latest  # macOS with Apple Silicon is not supported yet
@@ -70,9 +70,6 @@ jobs:
             os: windows-latest
             conda: false
             install_args: "-Ccmake.define.USE_NETCDF=false"
-    defaults:
-      run:
-        shell: bash -l {0}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
