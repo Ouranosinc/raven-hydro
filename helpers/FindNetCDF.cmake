@@ -59,6 +59,7 @@ endfunction()
 
 # Check if running within an Anaconda environment
 if(DEFINED ENV{CONDA_PREFIX})
+  message(STATUS "ANACONDA PREFIX FOUND")
   set(Anaconda_ROOT "$ENV{CONDA_PREFIX}")
   set(Anaconda_LIB_DIR "${Anaconda_ROOT}/lib")
   set(Anaconda_INCLUDE_DIR "${Anaconda_ROOT}/include")
@@ -67,6 +68,7 @@ endif()
 # Try to find a CMake-built NetCDF within Anaconda environment
 if(Anaconda_ROOT)
   if(WIN32)
+    message(STATUS "ON WINDOWS")
     set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/netcdf.lib")
   elseif(APPLE)
     set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/libnetcdf.dylib")
@@ -75,6 +77,7 @@ if(Anaconda_ROOT)
   endif()
 
   if(EXISTS "${NetCDF_LIBRARY}")
+    message(STATUS "NetCDF_LIBRARY EXISTS")
     set(NetCDF_FOUND TRUE)
     set(NetCDF_INCLUDE_DIRS "${Anaconda_INCLUDE_DIR}")
     set(NetCDF_VERSION "Unknown")  # Set the appropriate version if available
@@ -100,6 +103,7 @@ endif()
 # Try to find a CMake-built NetCDF.
 find_package(netCDF CONFIG QUIET)
 if (netCDF_FOUND)
+  message(STATUS "netCDF_FOUND FOUND")
   # Forward the variables in a consistent way.
   set(NetCDF_FOUND "${netCDF_FOUND}")
   set(NetCDF_INCLUDE_DIRS "${netCDF_INCLUDE_DIR}")
@@ -191,6 +195,7 @@ if (NetCDF_INCLUDE_DIR)
 endif ()
 
 include(FindPackageHandleStandardArgs)
+message(STATUS "NetCDF_LIBRARY: ${NetCDF_LIBRARY}; NetCDF_INCLUDE_DIR: ${NetCDF_INCLUDE_DIR}; NetCDF_VERSION: ${NetCDF_VERSION}; NetCDF_HAS_PARALLEL: ${NetCDF_HAS_PARALLEL}; NetCDF_FOUND: ${NetCDF_FOUND}")
 find_package_handle_standard_args(NetCDF
   REQUIRED_VARS NetCDF_LIBRARY NetCDF_INCLUDE_DIR
   VERSION_VAR NetCDF_VERSION)
