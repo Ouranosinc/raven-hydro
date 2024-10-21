@@ -131,12 +131,12 @@ source_group("Source Files" FILES ${SOURCE})
 
 IF(USE_NETCDF)
     # Link relevant NetCDF libraries to build
-    include_directories(${NetCDF_INCLUDE_DIR})
+    include_directories(${NetCDF_INCLUDE_DIRS})
     IF(PYTHON)
-        target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARY})
+        target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARIES})
     ENDIF()
     IF(COMPILE_EXE)
-        target_link_libraries(raven PUBLIC ${NetCDF_LIBRARY})
+        target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
     ENDIF()
 ENDIF()
 
