@@ -18,6 +18,15 @@ option(COMPILE_LIB "If ON, will create a dynamic lib file (default: OFF)" OFF)
 option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
 option(PYTHON, "If ON, will create a share library for python (default: OFF)" ON)
 
+# Compiler flags for Windows
+if (WIN32)
+    message(STATUS "Compiling for Windows")
+    message(STATUS "Setting MSVC flags for Windows")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+elseif(UNIX)
+    message(STATUS "Compiling for Unix-like OS")
+endif()
+
 # Add CMake module path
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -92,7 +101,16 @@ if (PYTHON)
   target_compile_definitions(libraven PUBLIC BMI_LIBRARY)
 endif()
 
-# Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
+# File extension is OS dependent (Linux: none, Windows: .exe)
+if (WIN32)
+    set(EXE_EXTENSION ".exe")
+    set(LIB_EXTENSION ".dll")
+else()
+    set(EXE_EXTENSION "")
+    set(LIB_EXTENSION ".so")
+endif()
+
+# Create executable
 IF(COMPILE_EXE)
     add_executable(raven
         ${HEADER}
@@ -113,12 +131,12 @@ source_group("Source Files" FILES ${SOURCE})
 
 IF(USE_NETCDF)
     # Link relevant NetCDF libraries to build
-    include_directories(${NetCDF_INCLUDE_DIRS})
+    include_directories(${NetCDF_INCLUDE_DIR})
     IF(PYTHON)
-        target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARIES})
+        target_link_libraries(libraven PUBLIC ${NetCDF_LIBRARY})
     ENDIF()
     IF(COMPILE_EXE)
-        target_link_libraries(raven PUBLIC ${NetCDF_LIBRARIES})
+        target_link_libraries(raven PUBLIC ${NetCDF_LIBRARY})
     ENDIF()
 ENDIF()
 

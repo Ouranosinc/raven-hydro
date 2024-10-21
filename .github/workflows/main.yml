@@ -28,7 +28,7 @@ jobs:
           python-version: "3.x"
           cache: "pip"
       - name: Run pre-commit hooks
-        uses:  pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
   build-windows:
     name: Python${{ matrix.python-version }} (Windows, conda=${{ matrix.conda }})
@@ -68,6 +68,10 @@ jobs:
           environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
+      - name: Check for OPeNDAP Support
+        if: ${{ matrix.conda }}
+        run: |
+          nc-config.exe --has-dap
 
       - name: Install raven-hydro
         if: ${{ !matrix.conda }}

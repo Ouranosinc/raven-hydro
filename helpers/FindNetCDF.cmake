@@ -39,8 +39,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Provides the following variables:
 
   * `NetCDF_FOUND`: Whether NetCDF was found or not.
-  * `NetCDF_INCLUDE_DIRS`: Include directories necessary to use NetCDF.
-  * `NetCDF_LIBRARIES`: Libraries necessary to use NetCDF.
+  * `NetCDF_INCLUDE_DIR`: Include directories necessary to use NetCDF.
+  * `NetCDF_LIBRARY`: Libraries necessary to use NetCDF.
   * `NetCDF_VERSION`: The version of NetCDF found.
   * `NetCDF::NetCDF`: A target to use with `target_link_libraries`.
   * `NetCDF_HAS_PARALLEL`: Whether or not NetCDF was found with parallel IO support.
@@ -67,31 +67,31 @@ endif()
 # Try to find a CMake-built NetCDF within Anaconda environment
 if(Anaconda_ROOT)
   if(WIN32)
-    set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/netcdf.lib")
+    set(NetCDF_LIBRARY "${Anaconda_LIB_DIR}/netcdf.lib")
   elseif(APPLE)
-    set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/libnetcdf.dylib")
+    set(NetCDF_LIBRARY "${Anaconda_LIB_DIR}/libnetcdf.dylib")
   else()
-    set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/libnetcdf.so")
+    set(NetCDF_LIBRARY "${Anaconda_LIB_DIR}/libnetcdf.so")
   endif()
 
   if(EXISTS "${NetCDF_LIBRARY}")
     set(NetCDF_FOUND TRUE)
-    set(NetCDF_INCLUDE_DIRS "${Anaconda_INCLUDE_DIR}")
+    set(NetCDF_INCLUDE_DIR "${Anaconda_INCLUDE_DIR}")
     set(NetCDF_VERSION "Unknown")  # Set the appropriate version if available
 
     include(FindPackageHandleStandardArgs)
     find_package_handle_standard_args(NetCDF
-      REQUIRED_VARS NetCDF_INCLUDE_DIRS NetCDF_LIBRARIES
+      REQUIRED_VARS NetCDF_INCLUDE_DIR NetCDF_LIBRARY
       VERSION_VAR NetCDF_VERSION)
 
     if (NOT TARGET NetCDF::NetCDF)
       add_library(NetCDF::NetCDF UNKNOWN IMPORTED)
       set_target_properties(NetCDF::NetCDF PROPERTIES
-        IMPORTED_LOCATION "${NetCDF_LIBRARIES}"
-        INTERFACE_INCLUDE_DIRECTORIES "${NetCDF_INCLUDE_DIRS}")
+        IMPORTED_LOCATION "${NetCDF_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${NetCDF_INCLUDE_DIR}")
     endif()
 
-    FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIRS}")
+    FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIR}")
     # Skip the rest of the logic in this file.
     return()
   endif()
@@ -102,13 +102,13 @@ find_package(netCDF CONFIG QUIET)
 if (netCDF_FOUND)
   # Forward the variables in a consistent way.
   set(NetCDF_FOUND "${netCDF_FOUND}")
-  set(NetCDF_INCLUDE_DIRS "${netCDF_INCLUDE_DIR}")
-  set(NetCDF_LIBRARIES "${netCDF_LIBRARIES}")
+  set(NetCDF_INCLUDE_DIR "${netCDF_INCLUDE_DIR}")
+  set(NetCDF_LIBRARY "${NetCDF_LIBRARY}")
   set(NetCDF_VERSION "${NetCDFVersion}")
 
   include(FindPackageHandleStandardArgs)
   find_package_handle_standard_args(NetCDF
-    REQUIRED_VARS NetCDF_INCLUDE_DIRS NetCDF_LIBRARIES
+    REQUIRED_VARS NetCDF_INCLUDE_DIR NetCDF_LIBRARY
     VERSION_VAR NetCDF_VERSION)
 
   if (NOT TARGET NetCDF::NetCDF)
@@ -122,11 +122,11 @@ if (netCDF_FOUND)
         INTERFACE_LINK_LIBRARIES "netcdf")
     else ()
       set_target_properties(NetCDF::NetCDF PROPERTIES
-        INTERFACE_LINK_LIBRARIES "${netCDF_LIBRARIES}")
+        INTERFACE_LINK_LIBRARIES "${NetCDF_LIBRARY}")
     endif ()
   endif ()
 
-  FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIRS}")
+  FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIR}")
   # Skip the rest of the logic in this file.
   return ()
 endif ()
@@ -137,18 +137,18 @@ if (PkgConfig_FOUND)
   if (_NetCDF_FOUND)
     # Forward the variables in a consistent way.
     set(NetCDF_FOUND "${_NetCDF_FOUND}")
-    set(NetCDF_INCLUDE_DIRS "${_NetCDF_INCLUDE_DIRS}")
-    set(NetCDF_LIBRARIES "${_NetCDF_LIBRARIES}")
+    set(NetCDF_INCLUDE_DIR "${_NetCDF_INCLUDE_DIR}")
+    set(NetCDF_LIBRARY "${_NetCDF_LIBRARY}")
     set(NetCDF_VERSION "${_NetCDF_VERSION}")
 
     include(FindPackageHandleStandardArgs)
     find_package_handle_standard_args(NetCDF
-      REQUIRED_VARS NetCDF_LIBRARIES
+      REQUIRED_VARS NetCDF_LIBRARY
       # This is not required because system-default include paths are not
       # reported by `FindPkgConfig`, so this might be empty. Assume that if we
       # have a library, the include directories are fine (if any) since
       # PkgConfig reported that the package was found.
-      # NetCDF_INCLUDE_DIRS
+      # NetCDF_INCLUDE_DIR
       VERSION_VAR NetCDF_VERSION)
 
     if (NOT TARGET NetCDF::NetCDF)
@@ -196,8 +196,8 @@ find_package_handle_standard_args(NetCDF
   VERSION_VAR NetCDF_VERSION)
 
 if (NetCDF_FOUND)
-  set(NetCDF_INCLUDE_DIRS "${NetCDF_INCLUDE_DIR}")
-  set(NetCDF_LIBRARIES "${NetCDF_LIBRARY}")
+  set(NetCDF_INCLUDE_DIR "${NetCDF_INCLUDE_DIR}")
+  set(NetCDF_LIBRARY "${NetCDF_LIBRARY}")
 
   if (NOT TARGET NetCDF::NetCDF)
     add_library(NetCDF::NetCDF UNKNOWN IMPORTED)
