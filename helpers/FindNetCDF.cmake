@@ -137,7 +137,7 @@ if (PkgConfig_FOUND)
   if (_NetCDF_FOUND)
     # Forward the variables in a consistent way.
     set(NetCDF_FOUND "${_NetCDF_FOUND}")
-    set(NetCDF_INCLUDE_DIRS "${_NetCDF_INCLUDEDIR}")
+    set(NetCDF_INCLUDE_DIRS "${_NetCDF_INCLUDE_DIRS}")
     set(NetCDF_LIBRARIES "${_NetCDF_LIBRARIES}")
     set(NetCDF_VERSION "${_NetCDF_VERSION}")
 
@@ -157,7 +157,7 @@ if (PkgConfig_FOUND)
         INTERFACE_LINK_LIBRARIES "PkgConfig::_NetCDF")
     endif ()
 
-    FindNetCDF_get_is_parallel_aware("${_NetCDF_INCLUDEDIR}")
+    FindNetCDF_get_is_parallel_aware("${_NetCDF_INCLUDE_DIRS}")
     # Skip the rest of the logic in this file.
     return ()
   endif ()

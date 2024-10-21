@@ -42,7 +42,7 @@ message(STATUS "CMAKE_BUILD_TYPE set to '${CMAKE_BUILD_TYPE}'")
 IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-deprecated)
     message(STATUS "Modified compile flags with '-Wno-deprecated'")
-ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+ENDIF()
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
