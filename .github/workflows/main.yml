@@ -31,29 +31,17 @@ jobs:
         uses:  pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
   build-windows:
-    name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}, args=${{ matrix.install_args }})
+    name: Python${{ matrix.python-version }} (Windows, conda=${{ matrix.conda }})
     needs: black
-    runs-on: ${{ matrix.os }}
+    runs-on: 'windows-latest'
     strategy:
       fail-fast: false
       matrix:
         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
-        os: [ 'windows-latest' ]
-        conda: [ false ]
-        install_args: [ "-C cmake.define.USE_NETCDF=false" ]
-        include:
-          - python-version: "3.8"
-            os: windows-latest
-            conda: true
-            install_args: ""
-          - python-version: "3.10"
-            os: windows-latest
-            conda: true
-            install_args: ""
-          - python-version: "3.13"
-            os: windows-latest
-            conda: true
-            install_args: ""
+        conda: [ true, false ]
+    defaults:
+      run:
+        shell: powershell {0}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
@@ -86,8 +74,14 @@ jobs:
           nc-config --has-dap
 
       - name: Install raven-hydro
+        if: ${{ !matrix.conda }}
         run: |
-          python -m pip install --editable . ${{ matrix.install_args }}
+          python -m pip install --editable . -C cmake.define.USE_NETCDF=false
+      - name: Install raven-hydro
+        if: ${{ matrix.conda }}
+        run: |
+          python -m pip install --editable .
+
       - name: Check versions
         run: |
           python -m pip list
@@ -113,25 +107,13 @@ jobs:
         os:
           - ubuntu-latest
 #          - macos-latest  # macOS with Apple Silicon is not supported yet
-        conda: [ false ]
+        conda: [ true, false ]
         install_args: [ "" ]
         include:
-          - python-version: "3.9"
-            os: ubuntu-latest
-            conda: true
-          - python-version: "3.10"
-            os: ubuntu-latest
-            conda: true
-#          - python-version: "3.10"  # macOS with Apple Silicon is not supported yet
-#            os: macos-latest
-#            conda: true
-          - python-version: "3.11"
+          - python-version: "3.12"
             os: ubuntu-latest
             conda: false
             install_args: "-C cmake.define.USE_NETCDF=false"
-          - python-version: "3.12"
-            os: ubuntu-latest
-            conda: true
     defaults:
       run:
         shell: bash -l {0}
