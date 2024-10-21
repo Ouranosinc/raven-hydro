@@ -74,7 +74,7 @@ if(Anaconda_ROOT)
     set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/libnetcdf.so")
   endif()
 
-  if(EXISTS "${NetCDF_LIBRARIES}")
+  if(EXISTS "${NetCDF_LIBRARY}")
     set(NetCDF_FOUND TRUE)
     set(NetCDF_INCLUDE_DIRS "${Anaconda_INCLUDE_DIR}")
     set(NetCDF_VERSION "Unknown")  # Set the appropriate version if available
@@ -103,7 +103,7 @@ if (netCDF_FOUND)
   # Forward the variables in a consistent way.
   set(NetCDF_FOUND "${netCDF_FOUND}")
   set(NetCDF_INCLUDE_DIRS "${netCDF_INCLUDE_DIR}")
-  set(NetCDF_LIBRARIES "${NetCDF_LIBRARIES}")
+  set(NetCDF_LIBRARIES "${netCDF_LIBRARIES}")
   set(NetCDF_VERSION "${NetCDFVersion}")
 
   include(FindPackageHandleStandardArgs)
@@ -122,7 +122,7 @@ if (netCDF_FOUND)
         INTERFACE_LINK_LIBRARIES "netcdf")
     else ()
       set_target_properties(NetCDF::NetCDF PROPERTIES
-        INTERFACE_LINK_LIBRARIES "${NetCDF_LIBRARIES}")
+        INTERFACE_LINK_LIBRARIES "${netCDF_LIBRARIES}")
     endif ()
   endif ()
 
@@ -137,7 +137,7 @@ if (PkgConfig_FOUND)
   if (_NetCDF_FOUND)
     # Forward the variables in a consistent way.
     set(NetCDF_FOUND "${_NetCDF_FOUND}")
-    set(NetCDF_INCLUDE_DIRS "${_NetCDF_INCLUDE_DIRS}")
+    set(NetCDF_INCLUDE_DIRS "${_NetCDF_INCLUDEDIR}")
     set(NetCDF_LIBRARIES "${_NetCDF_LIBRARIES}")
     set(NetCDF_VERSION "${_NetCDF_VERSION}")
 
@@ -157,24 +157,24 @@ if (PkgConfig_FOUND)
         INTERFACE_LINK_LIBRARIES "PkgConfig::_NetCDF")
     endif ()
 
-    FindNetCDF_get_is_parallel_aware("${_NetCDF_INCLUDE_DIRS}")
+    FindNetCDF_get_is_parallel_aware("${_NetCDF_INCLUDEDIR}")
     # Skip the rest of the logic in this file.
     return ()
   endif ()
 endif ()
 
-find_path(NetCDF_INCLUDE_DIRS
+find_path(NetCDF_INCLUDE_DIR
   NAMES netcdf.h
   DOC "netcdf include directories")
-mark_as_advanced(NetCDF_INCLUDE_DIRS)
+mark_as_advanced(NetCDF_INCLUDE_DIR)
 
-find_library(NetCDF_LIBRARIES
+find_library(NetCDF_LIBRARY
   NAMES netcdf
   DOC "netcdf library")
-mark_as_advanced(NetCDF_LIBRARIES)
+mark_as_advanced(NetCDF_LIBRARY)
 
-if (NetCDF_INCLUDE_DIRS)
-  file(STRINGS "${NetCDF_INCLUDE_DIRS}/netcdf_meta.h" _netcdf_version_lines
+if (NetCDF_INCLUDE_DIR)
+  file(STRINGS "${NetCDF_INCLUDE_DIR}/netcdf_meta.h" _netcdf_version_lines
     REGEX "#define[ \t]+NC_VERSION_(MAJOR|MINOR|PATCH|NOTE)")
   string(REGEX REPLACE ".*NC_VERSION_MAJOR *\([0-9]*\).*" "\\1" _netcdf_version_major "${_netcdf_version_lines}")
   string(REGEX REPLACE ".*NC_VERSION_MINOR *\([0-9]*\).*" "\\1" _netcdf_version_minor "${_netcdf_version_lines}")
@@ -187,22 +187,22 @@ if (NetCDF_INCLUDE_DIRS)
   unset(_netcdf_version_note)
   unset(_netcdf_version_lines)
 
-  FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIRS}")
+  FindNetCDF_get_is_parallel_aware("${NetCDF_INCLUDE_DIR}")
 endif ()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(NetCDF
-  REQUIRED_VARS NetCDF_LIBRARIES NetCDF_INCLUDE_DIRS
+  REQUIRED_VARS NetCDF_LIBRARIES NetCDF_INCLUDE_DIR
   VERSION_VAR NetCDF_VERSION)
 
 if (NetCDF_FOUND)
-  set(NetCDF_INCLUDE_DIRS "${NetCDF_INCLUDE_DIRS}")
-  set(NetCDF_LIBRARIES "${NetCDF_LIBRARIES}")
+  set(NetCDF_INCLUDE_DIRS "${NetCDF_INCLUDE_DIR}")
+  set(NetCDF_LIBRARIES "${NetCDF_LIBRARY}")
 
   if (NOT TARGET NetCDF::NetCDF)
     add_library(NetCDF::NetCDF UNKNOWN IMPORTED)
     set_target_properties(NetCDF::NetCDF PROPERTIES
-      IMPORTED_LOCATION "${NetCDF_LIBRARIES}"
-      INTERFACE_INCLUDE_DIRECTORIES "${NetCDF_INCLUDE_DIRS}")
+      IMPORTED_LOCATION "${NetCDF_LIBRARY}"
+      INTERFACE_INCLUDE_DIRECTORIES "${NetCDF_INCLUDE_DIR}")
   endif ()
 endif ()
