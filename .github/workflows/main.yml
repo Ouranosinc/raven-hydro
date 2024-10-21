@@ -66,6 +66,10 @@ jobs:
           - python-version: "3.12"
             os: ubuntu-latest
             conda: true
+          - python-version: "3.12"
+            os: windows-latest
+            conda: false
+            install_args: "-Ccmake.define.USE_NETCDF=false"
     defaults:
       run:
         shell: bash -l {0}
@@ -73,7 +77,19 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
-          egress-policy: audit
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            azure.archive.ubuntu.com:80
+            conda.anaconda.org:443
+            esm.ubuntu.com:443
+            files.pythonhosted.org:443
+            github.com:443
+            motd.ubuntu.com:443
+            objects.githubusercontent.com:443
+            packages.microsoft.com:443
+            pypi.org:443
+            repo.anaconda.com:443
       - name: Checkout Repository
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
         with:
