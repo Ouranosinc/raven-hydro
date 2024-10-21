@@ -41,7 +41,7 @@ jobs:
         conda: [ true, false ]
     defaults:
       run:
-        shell: cmd /C call {0}
+        shell: pwsh
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
@@ -68,6 +68,9 @@ jobs:
           environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
+          init-shell: >-
+            pwsh
+          post-cleanup: 'all'
 #      - name: Check for OPeNDAP Support
 #        if: ${{ matrix.conda }}
 #        run: |
