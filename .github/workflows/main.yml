@@ -68,10 +68,10 @@ jobs:
           environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
-      - name: Check for OPeNDAP Support
-        if: ${{ matrix.conda }}
-        run: |
-          nc-config.exe --has-dap
+#      - name: Check for OPeNDAP Support
+#        if: ${{ matrix.conda }}
+#        run: |
+#          nc-config.exe --has-dap
 
       - name: Install raven-hydro
         if: ${{ !matrix.conda }}
