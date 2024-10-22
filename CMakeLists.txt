@@ -19,21 +19,21 @@ option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
 option(PYTHON, "If ON, will create a share library for python (default: OFF)" ON)
 
 # Compiler flags for Windows
-if (WIN32)
+IF(WIN32)
     message(STATUS "Compiling for Windows")
     message(STATUS "Setting MSVC flags for Windows")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-elseif(UNIX)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+ELSEIF(UNIX)
     message(STATUS "Compiling for Unix-like OS")
-endif()
+ENDIF()
 
 # Add CMake module path
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Set C++ standard explicitly
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set default build type in CMake if skbuild is set
 message(STATUS "CMAKE_BUILD_TYPE set to '${CMAKE_BUILD_TYPE}'")
@@ -91,7 +91,7 @@ FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
 FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
 
 # Add Python files
-if (PYTHON)
+IF(PYTHON)
   SET(PYBIND11_NEWPYTHON ON)
   find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
   find_package(pybind11 CONFIG REQUIRED)
@@ -99,16 +99,16 @@ if (PYTHON)
   target_include_directories(libraven PUBLIC "${raven_SOURCE_DIR}/src")
   target_compile_features(libraven PUBLIC cxx_std_11)
   target_compile_definitions(libraven PUBLIC BMI_LIBRARY)
-endif()
+ENDIF()
 
 # File extension is OS dependent (Linux: none, Windows: .exe)
-if (WIN32)
-    set(EXE_EXTENSION ".exe")
-    set(LIB_EXTENSION ".dll")
-else()
-    set(EXE_EXTENSION "")
-    set(LIB_EXTENSION ".so")
-endif()
+IF(WIN32)
+    SET(EXE_EXTENSION ".exe")
+    SET(LIB_EXTENSION ".dll")
+ELSE()
+    SET(EXE_EXTENSION "")
+    SET(LIB_EXTENSION ".so")
+ENDIF()
 
 # Create executable
 IF(COMPILE_EXE)
@@ -162,5 +162,5 @@ IF(COMPILE_EXE)
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
-unset(COMPILE_LIB CACHE)
-unset(COMPILE_EXE CACHE)
+UNSET(COMPILE_LIB CACHE)
+UNSET(COMPILE_EXE CACHE)
