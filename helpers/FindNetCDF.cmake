@@ -157,7 +157,7 @@ if (PkgConfig_FOUND)
         INTERFACE_LINK_LIBRARIES "PkgConfig::_NetCDF")
     endif ()
 
-    FindNetCDF_get_is_parallel_aware("${_NetCDF_INCLUDEDIR}")
+    FindNetCDF_get_is_parallel_aware("${_NetCDF_INCLUDE_DIRS}")
     # Skip the rest of the logic in this file.
     return ()
   endif ()
