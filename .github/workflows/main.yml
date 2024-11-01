@@ -88,7 +88,7 @@ jobs:
           cache: "pip"
       - name: Set up Python${{ matrix.python-version }} with NetCDF4 (conda)
         if: ${{ matrix.conda }}
-        uses: mamba-org/setup-micromamba@f8b8a1e23a26f60a44c853292711bacfd3eac822 # v1.9.0
+        uses: mamba-org/setup-micromamba@617811f69075e3fd3ae68ca64220ad065877f246 # v2.0.0
         with:
           cache-downloads: true
           cache-environment: true
