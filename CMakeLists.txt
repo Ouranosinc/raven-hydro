@@ -18,13 +18,22 @@ option(COMPILE_LIB "If ON, will create a dynamic lib file (default: OFF)" OFF)
 option(COMPILE_EXE "If ON, will create a executable file (default: ON)" ON)
 option(PYTHON, "If ON, will create a share library for python (default: OFF)" ON)
 
+# Compiler flags for Windows
+IF(WIN32)
+    message(STATUS "Compiling for Windows")
+    message(STATUS "Setting MSVC flags for Windows")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+ELSEIF(UNIX)
+    message(STATUS "Compiling for Unix-like OS")
+ENDIF()
+
 # Add CMake module path
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Set C++ standard explicitly
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set default build type in CMake if skbuild is set
 message(STATUS "CMAKE_BUILD_TYPE set to '${CMAKE_BUILD_TYPE}'")
@@ -33,7 +42,7 @@ message(STATUS "CMAKE_BUILD_TYPE set to '${CMAKE_BUILD_TYPE}'")
 IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-deprecated)
     message(STATUS "Modified compile flags with '-Wno-deprecated'")
-ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+ENDIF()
 
 # Setup Raven Project
 PROJECT(${SKBUILD_PROJECT_NAME} LANGUAGES CXX VERSION ${SKBUILD_PROJECT_VERSION})
@@ -82,7 +91,7 @@ FILE(GLOB HEADER "${raven_SOURCE_DIR}/src/*.h")
 FILE(GLOB SOURCE "${raven_SOURCE_DIR}/src/*.cpp")
 
 # Add Python files
-if (PYTHON)
+IF(PYTHON)
   SET(PYBIND11_NEWPYTHON ON)
   find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
   find_package(pybind11 CONFIG REQUIRED)
@@ -90,9 +99,18 @@ if (PYTHON)
   target_include_directories(libraven PUBLIC "${raven_SOURCE_DIR}/src")
   target_compile_features(libraven PUBLIC cxx_std_11)
   target_compile_definitions(libraven PUBLIC BMI_LIBRARY)
-endif()
+ENDIF()
 
-# Create executable; File extension is OS dependent (Linux: none, Windows: .exe)
+# File extension is OS dependent (Linux: none, Windows: .exe)
+IF(WIN32)
+    SET(EXE_EXTENSION ".exe")
+    SET(LIB_EXTENSION ".dll")
+ELSE()
+    SET(EXE_EXTENSION "")
+    SET(LIB_EXTENSION ".so")
+ENDIF()
+
+# Create executable
 IF(COMPILE_EXE)
     add_executable(raven
         ${HEADER}
@@ -144,5 +162,5 @@ IF(COMPILE_EXE)
 ENDIF()
 
 # Unset CMake variables to avoid polluting the cache
-unset(COMPILE_LIB CACHE)
-unset(COMPILE_EXE CACHE)
+UNSET(COMPILE_LIB CACHE)
+UNSET(COMPILE_EXE CACHE)

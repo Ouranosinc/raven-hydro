@@ -28,44 +28,17 @@ jobs:
           python-version: "3.x"
           cache: "pip"
       - name: Run pre-commit hooks
-        uses:  pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
-  build:
-    name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}, args=${{ matrix.install_args }})
+  build-windows:
+    name: Python${{ matrix.python-version }} (Windows, conda=${{ matrix.conda }})
     needs: black
-    runs-on: ${{ matrix.os }}
+    runs-on: 'windows-latest'
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13.0-rc.2"]
-        os:
-          - ubuntu-latest
-#          - macos-latest  # macOS with Apple Silicon is not supported yet
-        conda: [ false ]
-        install_args: [ "" ]
-        include:
-          - python-version: "3.8"
-            os: windows-latest
-            conda: true
-          - python-version: "3.9"
-            os: ubuntu-latest
-            conda: true
-          - python-version: "3.10"
-            os: ubuntu-latest
-            conda: true
-          - python-version: "3.10"
-            os: windows-latest
-            conda: true
-#          - python-version: "3.10"  # macOS with Apple Silicon is not supported yet
-#            os: macos-latest
-#            conda: true
-          - python-version: "3.11"
-            os: ubuntu-latest
-            conda: false
-            install_args: "-Ccmake.define.USE_NETCDF=false"
-          - python-version: "3.12"
-            os: ubuntu-latest
-            conda: true
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
+        conda: [ true, false ]
     defaults:
       run:
         shell: bash -l {0}
@@ -76,6 +49,94 @@ jobs:
           egress-policy: audit
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: Setup Python${{ matrix.python-version }}
+        if: ${{ !matrix.conda }}
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Set up Python${{ matrix.python-version }} with NetCDF4 (conda)
+        if: ${{ matrix.conda }}
+        uses: mamba-org/setup-micromamba@f8b8a1e23a26f60a44c853292711bacfd3eac822 # v1.9.0
+        with:
+          cache-downloads: true
+          cache-environment: true
+          environment-file: environment.yml
+          create-args: >-
+            python=${{ matrix.python-version }}
+          post-cleanup: 'all'
+#      - name: Check for OPeNDAP Support
+#        if: ${{ matrix.conda }}
+#        run: |
+#          nc-config.exe --has-dap
+
+      - name: Install raven-hydro
+        if: ${{ !matrix.conda }}
+        run: |
+          python -m pip install --editable . -C cmake.define.USE_NETCDF=false
+      - name: Install raven-hydro
+        if: ${{ matrix.conda }}
+        run: |
+          python -m pip install --editable .
+
+      - name: Check versions
+        run: |
+          python -m pip list
+          python -m pip check
+      - name: Test raven-hydro
+        run: |
+          python -c "import raven_hydro; print(f'Description: {raven_hydro.__doc__}')"
+          python -c "import raven_hydro; print(f'Built with netcdf: {raven_hydro.__netcdf__}')"
+          python -c "import raven_hydro; print(f'RavenHydroFramework version: {raven_hydro.__raven_version__}')"
+          python -c "import raven_hydro; print(f'raven_hydro version: {raven_hydro.__version__}')"
+      - name: Test raven
+        run: |
+          raven -v
+
+  build-unix:
+    name: Python${{ matrix.python-version }} (${{ matrix.os }}, conda=${{ matrix.conda }}, args=${{ matrix.install_args }})
+    needs: black
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        os:
+          - ubuntu-latest
+#          - macos-latest  # macOS with Apple Silicon is not supported yet
+        conda: [ true, false ]
+        install_args: [ "" ]
+        include:
+          - python-version: "3.12"
+            os: ubuntu-latest
+            conda: false
+            install_args: "-C cmake.define.USE_NETCDF=false"
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            azure.archive.ubuntu.com:80
+            conda.anaconda.org:443
+            esm.ubuntu.com:443
+            files.pythonhosted.org:443
+            github.com:443
+            motd.ubuntu.com:443
+            objects.githubusercontent.com:443
+            packages.microsoft.com:443
+            pypi.org:443
+            repo.anaconda.com:443
+      - name: Checkout Repository
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
         with:
           fetch-depth: 0
           submodules: true
@@ -95,7 +156,6 @@ jobs:
           environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
-          micromamba-version: "1.5.10-0"  # pinned to avoid the breaking changes with mamba and micromamba (2.0.0).
 
       - name: Install NetCDF4 (Ubuntu/apt)
         if: (matrix.os == 'ubuntu-latest') && (!matrix.install_args) && (!matrix.conda)

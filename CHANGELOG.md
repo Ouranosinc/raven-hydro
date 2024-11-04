@@ -3,6 +3,7 @@
 ## 0.3.2 (unreleased)
 
 * `raven-hydro` now officially supports `Python` 3.13.
+* Several build dependencies have been updated to their latest versions.
 
 ## 0.3.1 (2024-06-17)
 
