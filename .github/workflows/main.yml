@@ -1,4 +1,4 @@
-name: raven-hydro Testing Suite
+name: Testing
 
 on:
   push:
