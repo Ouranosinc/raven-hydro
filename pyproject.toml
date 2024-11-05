@@ -79,7 +79,9 @@ RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
 RAVEN_GIT_TAG = "2512970bca65009c55906dc50a4d22bb5d727fe4"
 # specify whether to use the netcdf library
 USE_NETCDF = true
-logging.level = "DEBUG"
+
+[tool.scikit-build.logging]
+level = "DEBUG"
 
 [tool.scikit-build.metadata]
 readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
