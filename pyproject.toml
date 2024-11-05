@@ -57,12 +57,11 @@ end-before = "\n\n<!-- but before this -->"
 [tool.scikit-build]
 build-dir = "build"
 experimental = true
-minimum-version = "0.10"
+minimum-version = "build-system.requires"
 
 [tool.scikit-build.cmake]
 version = ">=3.26.1"
 build-type = "Release"
-verbose = true
 
 [tool.scikit-build.cmake.define]
 # specify whether to download the files even in the git submodule has been initialized and pulled
@@ -80,9 +79,7 @@ RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
 RAVEN_GIT_TAG = "2512970bca65009c55906dc50a4d22bb5d727fe4"
 # specify whether to use the netcdf library
 USE_NETCDF = true
-
-[tool.scikit-build.logging]
-level = "DEBUG"
+logging.level = "DEBUG"
 
 [tool.scikit-build.metadata]
 readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
