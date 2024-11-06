@@ -15,7 +15,7 @@ authors = [
 ]
 description = "A Python wrapper to set-up and build the hydrologic modelling framework Raven."
 license = {file = "LICENSE"}
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
@@ -26,7 +26,6 @@ classifiers = [
   "Natural Language :: English",
   "Programming Language :: C++",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -58,12 +57,11 @@ end-before = "\n\n<!-- but before this -->"
 [tool.scikit-build]
 build-dir = "build"
 experimental = true
-minimum-version = "0.9"
+minimum-version = "build-system.requires"
 
 [tool.scikit-build.cmake]
 version = ">=3.26.1"
 build-type = "Release"
-verbose = true
 
 [tool.scikit-build.cmake.define]
 # specify whether to download the files even in the git submodule has been initialized and pulled

@@ -1,4 +1,4 @@
-name: raven-hydro Testing Suite
+name: Testing
 
 on:
   push:
@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
+permissions:
+  contents: read
+
 jobs:
   black:
     name: Code linting
@@ -19,7 +22,15 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
-          egress-policy: audit
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            files.pythonhosted.org:443
+            github.com:443
+            proxy.golang.org:443
+            pypi.org:443
+            storage.googleapis.com:443
+            sum.golang.org:443
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Setup Python3
@@ -37,16 +48,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
+        python-version: [ "3.9", "3.13" ]
         conda: [ true, false ]
     defaults:
       run:
         shell: bash -l {0}
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
-        with:
-          egress-policy: audit
+      # Harden Runner does not support Windows virtual environments
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -69,10 +77,6 @@ jobs:
           create-args: >-
             python=${{ matrix.python-version }}
           post-cleanup: 'all'
-#      - name: Check for OPeNDAP Support
-#        if: ${{ matrix.conda }}
-#        run: |
-#          nc-config.exe --has-dap
 
       - name: Install raven-hydro
         if: ${{ !matrix.conda }}
@@ -104,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
         os:
           - ubuntu-latest
 #          - macos-latest  # macOS with Apple Silicon is not supported yet
