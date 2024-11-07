@@ -1,9 +1,10 @@
 # Changes
 
-## 0.3.2 (unreleased)
+## 0.3.2 (2024-11-07)
 
-* `raven-hydro` now officially supports `Python` 3.13.
-* Several build dependencies have been updated to their latest versions.
+* `raven-hydro` now officially supports `Python` 3.13 and has dropped support for `Python` 3.8.
+* `raven-hydro` now requires `scikit-build-core` v0.10.
+* Several development dependencies have been updated to their latest versions.
 
 ## 0.3.1 (2024-06-17)
 
