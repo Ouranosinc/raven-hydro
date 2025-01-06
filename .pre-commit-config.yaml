@@ -11,7 +11,7 @@ repos:
         exclude: 'RavenHydroFramework'
       - id: check-toml
   - repo: https://github.com/pappasam/toml-sort
-    rev: v0.23.1
+    rev: v0.24.2
     hooks:
       - id: toml-sort-fix
   - repo: https://github.com/adrienverge/yamllint.git
@@ -29,11 +29,11 @@ repos:
 #        args: [ '-i' ]
 #        exclude: 'RavenHydroFramework'
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.20.1
+    rev: v8.22.1
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.3
+    rev: 0.30.0
     hooks:
       - id: check-github-workflows
   - repo: meta
