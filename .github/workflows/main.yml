@@ -119,6 +119,10 @@ jobs:
             os: ubuntu-latest
             conda: false
             install_args: "-C cmake.define.USE_NETCDF=false"
+          - python-version: "3.12"
+            os: macos-latest
+            conda: false
+            install_args: "-C cmake.define.USE_NETCDF=false"
     defaults:
       run:
         shell: bash -l {0}
