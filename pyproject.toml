@@ -76,7 +76,7 @@ PYTHON = true
 HELPERS = "helpers"
 # the git repository to download the RavenHydroFramework from and the tag to check out
 RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
-RAVEN_GIT_TAG = "2512970bca65009c55906dc50a4d22bb5d727fe4"
+RAVEN_GIT_TAG = "d66c8533ec3859010bfa44b7b665c0af9e3f673b"
 # specify whether to use the netcdf library
 USE_NETCDF = true
 
