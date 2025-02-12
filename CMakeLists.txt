@@ -123,12 +123,12 @@ source_group("Source Files" fileS ${SOURCE})
 if(USE_NETCDF)
     message(STATUS "Using NetCDF library")
     # Find HDF5 library
-    find_package(HDF5 REQUIRED)
+    find_package(HDF5)
     # Find NetCDF library using custom helper script
     list(APPEND CMAKE_MODULE_PATH ${HELPERS})
     find_package(NetCDF REQUIRED)
     # Find ZLib library
-    find_package(ZLIB REQUIRED)
+    find_package(ZLIB)
 
     # Link relevant NetCDF libraries to build
     include_directories(${NetCDF_INCLUDE_DIRS})
