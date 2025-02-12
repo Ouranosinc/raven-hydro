@@ -117,8 +117,8 @@ if(COMPILE_EXE)
 endif()
 
 # Add source files
-source_group("Header Files" fileS ${HEADER})
-source_group("Source Files" fileS ${SOURCE})
+source_group("Header Files" FILES ${HEADER})
+source_group("Source Files" FILES ${SOURCE})
 
 if(USE_NETCDF)
     message(STATUS "Using NetCDF library")

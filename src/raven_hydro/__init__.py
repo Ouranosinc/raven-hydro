@@ -1,5 +1,3 @@
-"""A Python wrapper to set up and build the hydrologic modelling framework Raven."""
-
 ###################################################################################
 # Apache Software License 2.0
 #
@@ -18,8 +16,8 @@
 # limitations under the License.
 ###################################################################################
 
-from .libraven import __netcdf__, __version__ as __raven_version__
+from .libraven import __doc__, __netcdf__, __version__ as __raven_version__
 
 from ._version import __version__
 
-__all__ = ["__netcdf__", "__raven_version__", "__version__"]
+__all__ = ["__doc__", "__netcdf__", "__raven_version__", "__version__"]
