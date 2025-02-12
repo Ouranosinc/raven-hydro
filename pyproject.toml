@@ -13,7 +13,7 @@ name = "raven-hydro"
 authors = [
   {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
 ]
-description = "A Python wrapper to set-up and build the hydrologic modelling framework Raven."
+description = "A Python wrapper to set up and build the hydrologic modelling framework Raven."
 license = {file = "LICENSE"}
 requires-python = ">=3.9"
 classifiers = [
@@ -76,7 +76,7 @@ PYTHON = true
 HELPERS = "helpers"
 # the git repository to download the RavenHydroFramework from and the tag to check out
 RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
-RAVEN_GIT_TAG = "d66c8533ec3859010bfa44b7b665c0af9e3f673b"
+RAVEN_GIT_TAG = "38cf4df5414b0ab085956b4133637c9d3c3f46dd"
 # specify whether to use the netcdf library
 USE_NETCDF = true
 

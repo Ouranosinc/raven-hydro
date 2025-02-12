@@ -1,5 +1,6 @@
 # raven-hydro-specific
 src/raven_hydro/_version.py
+Raven_errors.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
