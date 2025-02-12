@@ -111,12 +111,16 @@ jobs:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
         os:
           - ubuntu-latest
-#          - macos-latest  # macOS with Apple Silicon is not supported yet
+          - macos-latest
         conda: [ true, false ]
         install_args: [ "" ]
         include:
           - python-version: "3.12"
             os: ubuntu-latest
+            conda: false
+            install_args: "-C cmake.define.USE_NETCDF=false"
+          - python-version: "3.12"
+            os: macos-latest
             conda: false
             install_args: "-C cmake.define.USE_NETCDF=false"
     defaults:

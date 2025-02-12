@@ -1,14 +1,14 @@
 name: raven-hydro
 channels:
   - conda-forge
-  - defaults
 dependencies:
-  - python >=3.8,<3.14
-  - pip >=24.2.0
+  - python >=3.9,<3.14
+  - pip >=25.0
   - hatch-fancy-pypi-readme >=23.1.0
   - hatchling >=1.23.0
   - pybind11 >=2.13.0
   - scikit-build-core >=0.10
   - setuptools-scm >=8.0
+  - hdf5
   - libnetcdf
   - zlib

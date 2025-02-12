@@ -1,5 +1,12 @@
 # Changes
 
+## 0.4.0 (2025-02-12)
+
+* Updated the `RavenHydroFramework` to v4.0.1.
+* ``CMakeLists.txt`` now mutes more deprecation warnings on GCC compilers.
+* Support for ARM64 (Apple Silicon) architectures has been added.
+* Licensing information has been updated to reflect current year.
+
 ## 0.3.2 (2024-11-07)
 
 * `raven-hydro` now officially supports `Python` 3.13 and has dropped support for `Python` 3.8.
