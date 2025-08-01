@@ -2,7 +2,7 @@
 requires = [
   "hatch-fancy-pypi-readme >=23.1.0",
   "hatchling >=1.23.0",
-  "pybind11 >=2.13.0,<3.0",
+  "pybind11 >=2.13.0,<4.0",
   "scikit-build-core>=0.10",
   "setuptools_scm>=8.0"
 ]
