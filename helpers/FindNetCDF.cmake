@@ -74,7 +74,7 @@ if(Anaconda_ROOT)
     set(NetCDF_LIBRARIES "${Anaconda_LIB_DIR}/libnetcdf.so")
   endif()
 
-  if(EXISTS "${NetCDF_LIBRARY}")
+  if(EXISTS "${NetCDF_LIBRARIES}")
     set(NetCDF_FOUND TRUE)
     set(NetCDF_INCLUDE_DIRS "${Anaconda_INCLUDE_DIR}")
     set(NetCDF_VERSION "Unknown")  # Set the appropriate version if available
