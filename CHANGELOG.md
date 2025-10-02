@@ -1,5 +1,11 @@
 # Changes
 
+## 0.4.1 (2025-10-02)
+
+* Fixed a bug in `CMakeLists.txt` that caused issues for environments where HDF5 was not easily discoverable.
+* Fixed a bug in the `FindNetCDF.cmake` that negatively impacted discoverability of NetCDF installations in Anaconda environments.
+* Updated the list of allowed connections in GitHub workflows for releases.
+
 ## 0.4.0 (2025-02-12)
 
 * Updated the `RavenHydroFramework` to v4.0.1.
