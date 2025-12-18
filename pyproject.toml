@@ -14,7 +14,7 @@ authors = [
   {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
 ]
 description = "A Python wrapper to set up and build the hydrologic modelling framework Raven."
-license = "Apache-2.0"
+license = "Apache-2.0 AND Artistic-2.0"
 license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]
 requires-python = ">=3.9"
 classifiers = [
@@ -22,8 +22,6 @@ classifiers = [
   "Intended Audience :: Developers",
   "Intended Audience :: Education",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Apache Software License",
-  "License :: OSI Approved :: Artistic License",
   "Natural Language :: English",
   "Programming Language :: C++",
   "Programming Language :: Python :: 3 :: Only",
