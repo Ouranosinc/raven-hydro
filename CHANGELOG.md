@@ -1,5 +1,13 @@
 # Changes
 
+## 0.5.0 (unreleased)
+
+* Updated the `RavenHydroFramework` to v4.1.0.
+* Updated build dependencies (`hatch-fancy-pypi-readme`, `hatchling`, `pybind11`, `scikit-build-core`, `setuptools-scm`) to more modern versions.
+* Added support for Python3.14.
+* Clarify that the project is available under Apache-2.0 and Artistic-2.0 (dual-licensed).
+* Package metadata is now PEP 639-compliant.
+
 ## 0.4.1 (2025-10-02)
 
 * Fixed a bug in `CMakeLists.txt` that caused issues for environments where HDF5 was not easily discoverable.
