@@ -6,11 +6,11 @@
 
 Raven-hydro is a Python-based installer for the hydrologic modelling framework [Raven](https://raven.uwaterloo.ca/).
 
-- Free software: Apache Software License v2.0
+- Free software: Apache Software License v2.0 and Artistic License v2.0
 
 ### About
 
-[Raven](https://raven.uwaterloo.ca) is a hydrological modeling framework that lets hydrologists build hydrological models by combining different hydrological processes together. It can also be used to emulate a variety of existing lumped and distributed models. Model structure, parameters, initial conditions and forcing files are configured in text files, which Raven parses to build and run hydrological simulations. A detailed description about modeling capability of Raven can be found in the [docs](https://raven.uwaterloo.ca/files/v3.8/RavenManual_v3.8.pdf).
+[Raven](https://raven.uwaterloo.ca) is a hydrological modeling framework that lets hydrologists build hydrological models by combining different hydrological processes together. It can also be used to emulate a variety of existing lumped and distributed models. Model structure, parameters, initial conditions and forcing files are configured in text files, which Raven parses to build and run hydrological simulations. A detailed description about modeling capability of Raven can be found in the [docs](https://raven.uwaterloo.ca/files/v4.1/RavenUsersManual_v4.1.pdf).
 
 ### Purpose
 
@@ -25,6 +25,14 @@ The source code for Raven is not included in this repository, but is fetched fro
 - Download, compile, version control, and package updating of the Raven Hydrologic model via *pip*/PyPI
 - Preserve copyright notices and licensing information
 - Multiplatform support (macOS, Linux, Windows, BSD, etc.)
+
+### Licensing
+
+This project is licensed under the Apache License, Version 2.0 as well as the Artistic License, Version 2.0.
+
+This project serves as a convenience wrapper for installation in Python environments using `pip`, with some added metadata. Third-party components are licensed under the Artistic License v2, located in `RavenHydroFramework`. Those source components are unmodified and remain licensed exclusively under the Artistic License, Version 2.0.
+
+By compiling and using this software, you agree to follow the terms outlined for both licenses.
 
 ### Installation
 
