@@ -28,9 +28,9 @@ The source code for Raven is not included in this repository, but is fetched fro
 
 ### Licensing
 
-This project is licensed under the Apache License, Version 2.0 as well as the Artistic License, Version 2.0.
+This project is licensed under the Apache License, Version 2.0, as well as the Artistic License, Version 2.0.
 
-This project serves as a convenience wrapper for installation in Python environments using `pip`, with some added metadata. Third-party components are licensed under the Artistic License v2, located in `RavenHydroFramework`. Those source components are unmodified and remain licensed exclusively under the Artistic License, Version 2.0.
+This project serves as a convenience wrapper for installation in Python environments using `pip`, with some added metadata. Third-party components are licensed under the Artistic License, Version 2.0, located in `RavenHydroFramework`. Those source components are unmodified and remain licensed exclusively under the Artistic License, Version 2.0.
 
 By compiling and using this software, you agree to follow the terms outlined for both licenses.
 
