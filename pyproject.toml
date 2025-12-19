@@ -1,10 +1,10 @@
 [build-system]
 requires = [
-  "hatch-fancy-pypi-readme >=23.1.0",
-  "hatchling >=1.23.0",
-  "pybind11 >=2.13.0,<4.0",
-  "scikit-build-core>=0.10",
-  "setuptools_scm>=8.0"
+  "hatch-fancy-pypi-readme >=25.1.0",
+  "hatchling >=1.27.0",
+  "pybind11 >=3.0.1,<4.0",
+  "scikit-build-core>=0.11",
+  "setuptools_scm>=9.2"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -14,15 +14,14 @@ authors = [
   {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
 ]
 description = "A Python wrapper to set up and build the hydrologic modelling framework Raven."
-license = {file = "LICENSE"}
+license = "Apache-2.0 AND Artistic-2.0"
+license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]
 requires-python = ">=3.9"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Intended Audience :: Education",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Apache Software License",
-  "License :: OSI Approved :: Artistic License",
   "Natural Language :: English",
   "Programming Language :: C++",
   "Programming Language :: Python :: 3 :: Only",
@@ -31,6 +30,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Scientific/Engineering :: Hydrology"
 ]
@@ -76,7 +76,7 @@ PYTHON = true
 HELPERS = "helpers"
 # the git repository to download the RavenHydroFramework from and the tag to check out
 RAVEN_GIT_REPO = "https://github.com/CSHS-CWRA/RavenHydroFramework"
-RAVEN_GIT_TAG = "38cf4df5414b0ab085956b4133637c9d3c3f46dd"
+RAVEN_GIT_TAG = "5fcb3e1bb711c2efc7ca0776244d020402605851"
 # specify whether to use the netcdf library
 USE_NETCDF = true
 
@@ -117,7 +117,6 @@ exclude = [
 
 [tool.scikit-build.wheel]
 expand-macos-universal-tags = true
-license-files = ["LICENSE", "RavenHydroFramework/LICENSE"]
 
 [tool.setuptools_scm] # Section required
 write_to = "src/raven_hydro/_version.py"
