@@ -1,6 +1,6 @@
 # Changes
 
-## 0.5.0 (unreleased)
+## 0.5.0 (2025-12-22)
 
 * Updated the `RavenHydroFramework` to v4.1.0.
 * Updated build dependencies (`hatch-fancy-pypi-readme`, `hatchling`, `pybind11`, `scikit-build-core`, `setuptools-scm`) to more modern versions.
