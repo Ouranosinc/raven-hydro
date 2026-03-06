@@ -61,8 +61,10 @@ jobs:
 #          tools: netcdf
 #          cache: yes
       - name: Install packaging libraries (Ubuntu/macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: ${{ steps.pyinstalled.outputs.python-path }} -m pip install build virtualenv
+        if: |
+          (matrix.os == 'macos-latest') || (matrix.os == 'ubuntu-latest')
+        run: |
+          ${{ steps.pyinstalled.outputs.python-path }} -m pip install --require-hashes -r CI/requirements_ci.txt
 #      - name: Build a binary wheel (Windows)
 #        if: ${{ matrix.os == 'windows-latest' }}
 #        run: python -m build --wheel
@@ -73,7 +75,7 @@ jobs:
         if: |
           (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.x')
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           path: |
             dist/*.tar.gz
