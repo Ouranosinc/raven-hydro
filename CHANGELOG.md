@@ -2,7 +2,7 @@
 
 ## 4.12.0 (2026-03-xx)
 
-* In order to reduce confusion between PyPI and conda-forge projects andfoster long-term support goals, `raven-hydro` versioning now closely follows that of ``RavenHydroFramework`.
+* In order to reduce confusion between PyPI and conda-forge projects and foster long-term support goals, `raven-hydro` versioning now closely follows that of `RavenHydroFramework`.
     * The version of `raven-hydro` will always be that of `RavenHydroFramework` with an extra point increment (e.g. `RHF` v1.2.3 -> `raven-hydro` v1.2.3.x)
 * Updated the `RavenHydroFramework` to v4.12.
 * `raven-hydro` now requires `scikit-build-core` v0.12.
