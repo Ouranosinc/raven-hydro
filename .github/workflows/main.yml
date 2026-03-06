@@ -41,8 +41,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.9", "3.14" ]
+        python-version: [ "3.10", "3.14" ]
         conda: [ true, false ]
+        include:
+          - python-version: "3.9"
+            conda: false
     defaults:
       run:
         shell: bash -l {0}
