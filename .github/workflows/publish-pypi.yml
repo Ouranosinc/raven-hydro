@@ -70,7 +70,7 @@ jobs:
 #        run: ${{ steps.pyinstalled.outputs.python-path }} -m build --wheel
       - name: Build a source tarball (Ubuntu)
         if: |
-          (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.x')
+          (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.14')
         run: ${{ steps.pyinstalled.outputs.python-path }} -m build --sdist
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
