@@ -1,5 +1,10 @@
 # Changes
 
+## 4.12.1 (2026-03-11)
+
+* Fix: Updated the git submodule of `RavenHydroFramework` to point to tag `v4.12`.
+    * The previous release of `raven-hydro` did not update the git submodule tag, leading to differences in versions of `RavenHydroFramework` depending on the method used to compile the binary.
+
 ## 4.12.0 (2026-03-09)
 
 * In order to reduce confusion between PyPI and conda-forge projects and foster long-term support goals, `raven-hydro` versioning now closely follows that of `RavenHydroFramework`.
