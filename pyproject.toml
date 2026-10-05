@@ -17,7 +17,7 @@ build = [
 [project]
 name = "raven-hydro"
 authors = [
-  {name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca"}
+  { name = "Trevor James Smith", email = "smith.trevorj@ouranos.ca" }
 ]
 description = "A Python wrapper to set up and build the hydrologic modelling framework Raven."
 license = "Apache-2.0 AND Artistic-2.0"
