@@ -6,12 +6,12 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: 'RavenHydroFramework'
+        exclude: "RavenHydroFramework"
       - id: end-of-file-fixer
-        exclude: 'RavenHydroFramework'
+        exclude: "RavenHydroFramework"
       - id: check-toml
   - repo: https://github.com/pappasam/toml-sort
-    rev: v0.24.4
+    rev: v0.25.0
     hooks:
       - id: toml-sort-fix
   - repo: https://github.com/adrienverge/yamllint.git
@@ -19,24 +19,25 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.20
+    rev: v0.16.10
     hooks:
       - id: ruff-check
-        exclude: 'RavenHydroFramework'
+        args: ["--fix"]
+        exclude: "RavenHydroFramework"
       - id: ruff-format
-        exclude: 'RavenHydroFramework'
-#  - repo: https://github.com/Takishima/cmake-pre-commit-hooks
-#    rev: v1.9.5
-#    hooks:
-#      - id: clang-format
-#        args: [ '-i' ]
-#        exclude: 'RavenHydroFramework'
+        exclude: "RavenHydroFramework"
+  #  - repo: https://github.com/Takishima/cmake-pre-commit-hooks
+  #    rev: v1.9.5
+  #    hooks:
+  #      - id: clang-format
+  #        args: [ '-i' ]
+  #        exclude: 'RavenHydroFramework'
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.0
     hooks:
       - id: gitleaks
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.4
+    rev: 0.38.2
     hooks:
       - id: check-github-workflows
   - repo: meta
@@ -50,8 +51,8 @@ ci:
 
     for more information, see https://pre-commit.ci
   autofix_prs: true
-  autoupdate_branch: ''
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_branch: ""
+  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: quarterly
-  skip: [ ]
+  skip: []
   submodules: false

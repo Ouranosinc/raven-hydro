@@ -16,8 +16,8 @@
 # limitations under the License.
 ###################################################################################
 
-from .libraven import __doc__, __netcdf__, __version__ as __raven_version__
-
 from ._version import __version__
+from .libraven import __doc__, __netcdf__
+from .libraven import __version__ as __raven_version__
 
 __all__ = ["__doc__", "__netcdf__", "__raven_version__", "__version__"]
