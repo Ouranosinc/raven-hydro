@@ -37,7 +37,7 @@ jobs:
   windows-install:
     name: Python${{ matrix.python-version }} (Windows, conda=${{ matrix.conda }})
     needs: black
-    runs-on: 'windows-latest'
+    runs-on: "windows-latest"
     strategy:
       fail-fast: false
       matrix:
@@ -72,7 +72,7 @@ jobs:
           environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
-          post-cleanup: 'all'
+          post-cleanup: "all"
 
       - name: Install raven-hydro
         if: ${{ !matrix.conda }}
@@ -139,7 +139,9 @@ jobs:
             motd.ubuntu.com:443
             objects.githubusercontent.com:443
             packages.microsoft.com:443
+            pkg-containers.githubusercontent.com:443
             pypi.org:443
+            raw.githubusercontent.com:443
             release-assets.githubusercontent.com:443
             repo.anaconda.com:443
       - name: Checkout Repository
